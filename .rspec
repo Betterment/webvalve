@@ -1,0 +1,3 @@
+--tty
+--color
+--require spec_helper

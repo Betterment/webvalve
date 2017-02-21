@@ -1,0 +1,9 @@
+.bundle/
+log/*.log
+pkg/
+spec/examples.txt
+spec/dummy/log
+spec/dummy/db/*.sqlite3
+doc/
+.yardoc/
+Gemfile.lock
