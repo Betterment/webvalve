@@ -1,7 +1,7 @@
 WebValve
 ========
 
-[![Build Status](https://travis-ci.com/Betterment/webvalve.svg?token=6b6DErRMUHX47kEoBZ3t&branch=master)](https://travis-ci.com/Betterment/webvalve)
+[![Build Status](https://travis-ci.org/Betterment/webvalve.svg?branch=master)](https://travis-ci.org/Betterment/webvalve)
 
 WebValve is a tool for defining and registering fake implementations of
 HTTP services and toggling between the real services and the fake ones
