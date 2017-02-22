@@ -120,7 +120,7 @@ runtime concern.
 
 ## Configuring fakes in tests
 
-In order to get WebValve fake servies working properly in tests, you
+In order to get WebValve fake services working properly in tests, you
 have to configure WebValve at the beginning of each test. For RSpec, there
 is a configuration provided. 
 
