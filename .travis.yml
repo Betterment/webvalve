@@ -7,3 +7,6 @@ before_install:
   - gem update bundler
   - gem cleanup bundler
 install: "bundle install --jobs 8"
+matrix:
+  allow_failures:
+    - jruby-9.1.5.0
