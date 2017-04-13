@@ -11,6 +11,11 @@ This library is made possible by the incredible gems
 [WebMock](https://github.com/bblimke/webmock) and
 [Sinatra](https://github.com/sinatra/sinatra).
 
+Check out [the Rails at Scale talk](https://www.youtube.com/watch?v=Nd9hnffxCP8) for some background on why we built it and some of the key design decisions behind WebValve:
+
+[![Rails @ Scale Talk](https://img.youtube.com/vi/Nd9hnffxCP8/0.jpg)](https://www.youtube.com/watch?v=Nd9hnffxCP8)
+
+
 ## Getting Started
 
 ### Network connections disabled by default
