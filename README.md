@@ -2,6 +2,7 @@ WebValve
 ========
 
 [![Build Status](https://travis-ci.org/Betterment/webvalve.svg?branch=master)](https://travis-ci.org/Betterment/webvalve)
+[![Gem Status](https://img.shields.io/gem/v/webvalve.svg)](https://rubygems.org/gems/webvalve)
 
 WebValve is a tool for defining and registering fake implementations of
 HTTP services and toggling between the real services and the fake ones
@@ -15,8 +16,13 @@ Check out [the Rails at Scale talk](https://www.youtube.com/watch?v=Nd9hnffxCP8)
 
 [![Rails @ Scale Talk](https://img.youtube.com/vi/Nd9hnffxCP8/0.jpg)](https://www.youtube.com/watch?v=Nd9hnffxCP8)
 
-
 ## Getting Started
+
+### Installation
+
+```
+gem install webvalve
+```
 
 ### Network connections disabled by default
 
