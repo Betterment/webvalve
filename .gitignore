@@ -7,3 +7,4 @@ spec/dummy/db/*.sqlite3
 doc/
 .yardoc/
 Gemfile.lock
+/gemfiles/*.gemfile.lock

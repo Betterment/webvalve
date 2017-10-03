@@ -11,10 +11,17 @@ Bundler::GemHelper.install_tasks
 
 if Rails.env.development? || Rails.env.test?
   if defined? Dummy
-    require 'rspec/core'
-    require 'rspec/core/rake_task'
-    RSpec::Core::RakeTask.new(:spec)
-    task default: :spec
+    task(:default).clear
+    if ENV['APPRAISAL_INITIALIZED'] || ENV['TRAVIS']
+      require 'rspec/core'
+      require 'rspec/core/rake_task'
+      RSpec::Core::RakeTask.new(:spec)
+      task default: :spec
+    else
+      require 'appraisal'
+      Appraisal::Task.new
+      task default: :appraisal
+    end
   end
 end
 
