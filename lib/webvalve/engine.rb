@@ -7,7 +7,7 @@ module WebValve
         WebValve.config_paths << app.root
 
         WebValve.config_paths.each do |root|
-          app.config.eager_load_paths << root.join('webvalve').to_s
+          app.config.eager_load_paths += [root.join('webvalve').to_s]
         end
       end
 
