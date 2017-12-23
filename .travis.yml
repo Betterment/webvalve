@@ -9,6 +9,10 @@ gemfile:
   - gemfiles/rails_5_1.gemfile
 before_install:
   - gem update --system
-  - gem update bundler
+  # TODO: recheck 2018/01/13
+  # This has been commented out until the following issues are resolved
+  # https://github.com/bundler/bundler/issues/6144
+  # https://github.com/rubygems/rubygems/issues/2055
+  # - gem update bundler
   - gem cleanup bundler
 install: "bundle install --jobs 8"
