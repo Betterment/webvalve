@@ -14,5 +14,7 @@ before_install:
   # https://github.com/bundler/bundler/issues/6144
   # https://github.com/rubygems/rubygems/issues/2055
   # - gem update bundler
+  - gem install bundler -v 1.16.0
+  - gem uninstall bundler -v 1.16.1
   - gem cleanup bundler
 install: "bundle install --jobs 8"
