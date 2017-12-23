@@ -7,7 +7,8 @@ module WebValve
   autoload :FakeServiceConfig, 'webvalve/fake_service_config'
   autoload :Manager, 'webvalve/manager'
 
-  ENABLED_ENVS = %w(development test).freeze
+  ALWAYS_ENABLED_ENVS = %w(development test).freeze
+  ENABLED_VALUES = %w(1 t true).freeze
 
   class << self
     # @!method setup
@@ -21,7 +22,8 @@ module WebValve
     delegate :setup, :register, :whitelist_url, :reset, to: :manager
 
     def enabled?
-      Rails.env.in?(ENABLED_ENVS)
+      Rails.env.in?(ALWAYS_ENABLED_ENVS) ||
+        ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
     end
 
     def config_paths
