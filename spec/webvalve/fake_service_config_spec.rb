@@ -106,6 +106,28 @@ RSpec.describe WebValve::FakeServiceConfig do
           expect(subject.should_intercept?).to eq false
         end
       end
+
+      context 'when WEBVALVE_ENABLED is true' do
+        around do |ex|
+          with_env 'WEBVALVE_ENABLED' => '1' do
+            ex.run
+          end
+        end
+
+        it 'returns true' do
+          expect(subject.should_intercept?).to eq true
+        end
+
+        it 'respects DUMMY_ENABLED flag' do
+          with_env 'DUMMY_ENABLED' => '1' do
+            expect(subject.should_intercept?).to eq false
+          end
+
+          with_env 'DUMMY_ENABLED' => '0' do
+            expect(subject.should_intercept?).to eq true
+          end
+        end
+      end
     end
   end
 
