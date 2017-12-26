@@ -18,11 +18,16 @@ Check out [the Rails at Scale talk](https://www.youtube.com/watch?v=Nd9hnffxCP8)
 
 ## Getting Started
 
+WebValve is designed to work with Rails 4+.
+
 ### Installation
 
+You can add WebValve to your Gemfile with:
 ```
-gem install webvalve
+gem 'webvalve'
 ```
+
+Then run `bundle install`.
 
 ### Network connections disabled by default
 
@@ -187,6 +192,15 @@ The definition of `FakeService` is really simple. It's just a
 `Sinatra::Base` class. It is wired up to support returning JSON 
 responses and it will raise when a route is requested but it is 
 not registered.
+
+## Frequently Asked Questions
+
+> Can I use WebValve in environments like staging and demo?
+
+Yes! By default WebValve is only enabled in test and development
+environments; however, it can be enabled in other environments by
+setting `WEBVALVE_ENABLED=true`. This can be useful for spinning up
+cheap, one-off environments for user-testing or demos.
 
 ## How to Contribute
 

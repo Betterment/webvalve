@@ -1,7 +1,5 @@
 module WebValve
   class FakeServiceConfig
-    ENABLED_VALUES = %w(1 t true)
-
     attr_reader :service
 
     def initialize(service:, url: nil)
@@ -10,7 +8,7 @@ module WebValve
     end
 
     def should_intercept?
-      Rails.env.test? ||
+      Rails.env.test? || # always intercept in test
         (WebValve.enabled? && !service_enabled_in_env?)
     end
 
@@ -39,7 +37,7 @@ module WebValve
     end
 
     def service_enabled_in_env?
-      ENABLED_VALUES.include?(ENV["#{service_name.to_s.upcase}_ENABLED"])
+      WebValve::ENABLED_VALUES.include?(ENV["#{service_name.to_s.upcase}_ENABLED"])
     end
 
     def default_service_url

@@ -11,7 +11,7 @@ RSpec.describe WebValve::Manager do
   describe '#whitelist_url' do
     it 'raises on duplicates' do
       subject.whitelist_url "foo"
-      expect { subject.whitelist_url "foo" }.to raise_error /already registered/
+      expect { subject.whitelist_url "foo" }.to raise_error(/already registered/)
       expect(subject.whitelisted_urls.count).to eq 1
       expect(subject.whitelisted_urls).to contain_exactly(/foo/)
     end
@@ -22,7 +22,7 @@ RSpec.describe WebValve::Manager do
       fake = class_double(WebValve::FakeService)
 
       subject.register fake
-      expect { subject.register fake }.to raise_error /already registered/
+      expect { subject.register fake }.to raise_error(/already registered/)
       expect(subject.fake_service_configs.count).to eq 1
       expect(subject.fake_service_configs.first.service).to eq fake
     end

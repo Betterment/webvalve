@@ -1,13 +1,8 @@
 require 'set'
 
 module WebValve
-  extend ActiveSupport::Autoload
-  autoload :FakeService, 'webvalve/fake_service'
-  autoload :FakeServiceWrapper, 'webvalve/fake_service_wrapper'
-  autoload :FakeServiceConfig, 'webvalve/fake_service_config'
-  autoload :Manager, 'webvalve/manager'
-
-  ENABLED_ENVS = %w(development test).freeze
+  ALWAYS_ENABLED_ENVS = %w(development test).freeze
+  ENABLED_VALUES = %w(1 t true).freeze
 
   class << self
     # @!method setup
@@ -21,7 +16,17 @@ module WebValve
     delegate :setup, :register, :whitelist_url, :reset, to: :manager
 
     def enabled?
-      Rails.env.in?(ENABLED_ENVS)
+      if Rails.env.in?(ALWAYS_ENABLED_ENVS)
+        if ENV.key? 'WEBVALVE_ENABLED'
+          Rails.logger.warn(<<~MESSAGE)
+            WARNING: Ignoring WEBVALVE_ENABLED environment variable setting (#{ENV['WEBVALVE_ENABLED']})
+            WebValve is always enabled in development and test environments.
+          MESSAGE
+        end
+        true
+      else
+        ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
+      end
     end
 
     def config_paths
@@ -38,3 +43,7 @@ end
 
 require 'webvalve/instrumentation'
 require 'webvalve/engine'
+require 'webvalve/fake_service'
+require 'webvalve/fake_service_wrapper'
+require 'webvalve/fake_service_config'
+require 'webvalve/manager'
