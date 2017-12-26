@@ -8,7 +8,7 @@ module WebValve
     end
 
     def should_intercept?
-      Rails.env.test? ||
+      Rails.env.test? || # always intercept in test
         (WebValve.enabled? && !service_enabled_in_env?)
     end
 
