@@ -2,7 +2,8 @@ require 'webvalve'
 require 'webmock/rspec'
 
 RSpec.configure do |c|
-  c.before do
+  c.around do |example|
     WebValve.setup
+    example.run
   end
 end
