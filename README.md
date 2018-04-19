@@ -212,8 +212,8 @@ cheap, one-off environments for user-testing or demos.
 
 Yep! If you're not using Rails, you'll have to load the config file
 yourself. You will want to explicitly `require` each of your fake
-services in your `config/webvalve.rb` and you will want to `require`
-your config file during your app's boot-up process.
+services in your `config/webvalve.rb`, `require` your config file, and
+call `WebValve.setup`  during your app's boot-up process.
 
 ## How to Contribute
 
