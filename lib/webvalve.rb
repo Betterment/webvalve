@@ -69,7 +69,7 @@ module WebValve
   end
 end
 
-require 'webvalve/engine' if defined?(::Rails)
+require 'webvalve/railtie' if defined?(::Rails)
 require 'webvalve/instrumentation'
 require 'webvalve/fake_service'
 require 'webvalve/fake_service_wrapper'
