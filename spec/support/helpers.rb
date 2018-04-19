@@ -15,10 +15,10 @@ module Helpers
   end
 
   def with_rails_env(env)
-    initial_env = Rails.env
-    Rails.env = env
+    initial_env = WebValve.env
+    WebValve.env = env
     yield
   ensure
-    Rails.env = initial_env
+    WebValve.env = initial_env
   end
 end

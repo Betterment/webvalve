@@ -16,9 +16,9 @@ module WebValve
     delegate :setup, :register, :whitelist_url, :reset, to: :manager
 
     def enabled?
-      if Rails.env.in?(ALWAYS_ENABLED_ENVS)
+      if env.in?(ALWAYS_ENABLED_ENVS)
         if ENV.key? 'WEBVALVE_ENABLED'
-          Rails.logger.warn(<<~MESSAGE)
+          logger.warn(<<~MESSAGE)
             WARNING: Ignoring WEBVALVE_ENABLED environment variable setting (#{ENV['WEBVALVE_ENABLED']})
             WebValve is always enabled in development and test environments.
           MESSAGE
@@ -33,7 +33,33 @@ module WebValve
       @config_paths ||= Set.new
     end
 
+    def logger
+      @logger ||= build_logger
+    end
+
+    def logger=(logger)
+      @logger = logger
+    end
+
+    def env
+      @env ||= ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
+    end
+
+    def env=(env)
+      @env = env
+    end
+
     private
+
+    def build_logger
+      if defined?(Rails)
+        Rails.logger
+      else
+        ActiveSupport::Logger.new(STDOUT).tap do |l|
+          l.formatter = ::Logger::Formatter.new
+        end
+      end
+    end
 
     def manager
       WebValve::Manager.instance
@@ -41,8 +67,7 @@ module WebValve
   end
 end
 
-require 'webvalve/instrumentation'
-require 'webvalve/engine'
+require 'webvalve/engine' if defined?(Rails)
 require 'webvalve/fake_service'
 require 'webvalve/fake_service_wrapper'
 require 'webvalve/fake_service_config'
