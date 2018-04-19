@@ -1,4 +1,6 @@
 require 'set'
+require 'active_support'
+require 'active_support/core_ext'
 
 module WebValve
   ALWAYS_ENABLED_ENVS = %w(development test).freeze

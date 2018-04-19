@@ -141,7 +141,7 @@ have to configure WebValve at the beginning of each test. For RSpec, there
 is a configuration provided. 
 
 ```ruby
-# spec/rails_helper.rb
+# spec/spec_helper.rb
 require 'webvalve/rspec'
 ```
 

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe WebValve do
   it 'delegates .setup to manager' do
