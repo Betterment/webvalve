@@ -54,8 +54,8 @@ module WebValve
     private
 
     def build_logger
-      if defined?(Rails)
-        Rails.logger
+      if defined?(::Rails)
+        ::Rails.logger
       else
         ActiveSupport::Logger.new(STDOUT).tap do |l|
           l.formatter = ::Logger::Formatter.new
@@ -69,7 +69,7 @@ module WebValve
   end
 end
 
-require 'webvalve/engine' if defined?(Rails)
+require 'webvalve/engine' if defined?(::Rails)
 require 'webvalve/instrumentation'
 require 'webvalve/fake_service'
 require 'webvalve/fake_service_wrapper'
