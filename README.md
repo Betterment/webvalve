@@ -18,7 +18,8 @@ Check out [the Rails at Scale talk](https://www.youtube.com/watch?v=Nd9hnffxCP8)
 
 ## Getting Started
 
-WebValve is designed to work with Rails 4+.
+WebValve is designed to work with Rails 4+, but it also should work with
+non-Rails apps.
 
 ### Installation
 
@@ -75,6 +76,8 @@ This will drop a new file in your config directory.
 # WebValve.whitelist_url 'https://example.com'
 ```
 
+If you're not using Rails, you can create this file for yourself.
+
 ### Registering a service
 
 Next, you will want create a `FakeService` and register
@@ -112,6 +115,9 @@ And it will automatically register it in `config/webvalve.rb`
 # config/webvalve.rb
 WebValve.register FakeBank
 ```
+
+Again, if you're not using Rails, you'll have to create this file
+yourself and update the config file manually.
 
 You'll also want to define an environment variable for the base url of
 your service.
@@ -201,6 +207,13 @@ Yes! By default WebValve is only enabled in test and development
 environments; however, it can be enabled in other environments by
 setting `WEBVALVE_ENABLED=true`. This can be useful for spinning up
 cheap, one-off environments for user-testing or demos.
+
+> Can I use WebValve without Rails?
+
+Yep! If you're not using Rails, you'll have to load the config file
+yourself. You will want to explicitly `require` each of your fake
+services in your `config/webvalve.rb` and you will want to `require`
+your config file during your app's boot-up process.
 
 ## How to Contribute
 
