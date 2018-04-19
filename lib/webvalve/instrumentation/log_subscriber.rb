@@ -1,3 +1,5 @@
+require 'active_support/log_subscriber'
+
 module WebValve
   module Instrumentation
     class LogSubscriber < ActiveSupport::LogSubscriber

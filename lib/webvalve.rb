@@ -44,11 +44,11 @@ module WebValve
     end
 
     def env
-      @env ||= ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
+      @env ||= (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development').inquiry
     end
 
     def env=(env)
-      @env = env
+      @env = env&.inquiry
     end
 
     private
@@ -70,6 +70,7 @@ module WebValve
 end
 
 require 'webvalve/engine' if defined?(Rails)
+require 'webvalve/instrumentation'
 require 'webvalve/fake_service'
 require 'webvalve/fake_service_wrapper'
 require 'webvalve/fake_service_config'

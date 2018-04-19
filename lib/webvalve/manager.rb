@@ -50,7 +50,7 @@ module WebValve
 
     def webmock_disable_options
       { allow_localhost: true }.tap do |opts|
-        opts[:allow] = whitelisted_url_regexps unless WebValve.env == 'test'
+        opts[:allow] = whitelisted_url_regexps unless WebValve.env.test?
       end
     end
 
