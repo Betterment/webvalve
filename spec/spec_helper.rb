@@ -1,4 +1,5 @@
 ENV['RAILS_ENV'] ||= 'test'
+require File.expand_path('dummy/config/environment', __dir__) if ENV['BUNDLE_GEMFILE'] =~ /rails/
 require 'rspec'
 require 'pry'
 require 'webvalve'
