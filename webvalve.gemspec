@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{lib}/**/*", "LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency 'activesupport'
+  s.add_dependency 'activesupport', '>= 4.2'
   s.add_dependency 'sinatra', '>= 1.4', '< 3'
   s.add_dependency 'sinatra-contrib', '>= 1.4', '< 3'
   s.add_dependency "webmock", "~> 2.0"
