@@ -19,7 +19,7 @@ Check out [the Rails at Scale talk](https://www.youtube.com/watch?v=Nd9hnffxCP8)
 ## Getting Started
 
 WebValve is designed to work with Rails 4+, but it also should work with
-non-Rails apps.
+non-Rails apps and gems.
 
 ### Installation
 
