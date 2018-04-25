@@ -1,5 +1,4 @@
 appraise 'rails-4-2' do
-  ENV['RAILS_ENABLED'] = 'true'
   gem 'rails', '~> 4.2.0'
   gem 'jdbc-sqlite3', platforms: :jruby
   gem 'activerecord-jdbcsqlite3-adapter', '~> 1.3.24', platforms: :jruby
@@ -14,7 +13,6 @@ appraise 'rails-5-0' do
 end
 
 appraise 'rails-5-1' do
-  ENV['RAILS_ENABLED'] = 'true'
   gem 'rails', '~> 5.1.0'
   gem 'jdbc-sqlite3', platforms: :jruby
   gem 'activerecord-jdbcsqlite3-adapter', platforms: :jruby
