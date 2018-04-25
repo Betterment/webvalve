@@ -35,31 +35,25 @@ module WebValve
       @config_paths ||= Set.new
     end
 
-    def logger
-      @logger ||= build_logger
-    end
+    if defined?(::Rails)
+      delegate :env, :env=, :logger, :logger=, to: ::Rails
+    else
+      def env
+        @env ||= (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development').inquiry
+      end
 
-    def logger=(logger)
-      @logger = logger
-    end
+      def env=(env)
+        @env = env&.inquiry
+      end
 
-    def env
-      @env ||= (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development').inquiry
-    end
-
-    def env=(env)
-      @env = env&.inquiry
-    end
-
-    private
-
-    def build_logger
-      if defined?(::Rails)
-        ::Rails.logger
-      else
-        ActiveSupport::Logger.new(STDOUT).tap do |l|
+      def logger
+        @logger ||= ActiveSupport::Logger.new(STDOUT).tap do |l|
           l.formatter = ::Logger::Formatter.new
         end
+      end
+
+      def logger=(logger)
+        @logger = logger
       end
     end
 
