@@ -1,3 +1,5 @@
+require 'active_support/notifications'
+
 module WebValve
   module Instrumentation
     class Middleware

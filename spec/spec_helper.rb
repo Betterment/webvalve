@@ -1,3 +1,11 @@
+ENV['RAILS_ENV'] ||= 'test'
+require File.expand_path('dummy/config/environment', __dir__) if ENV['BUNDLE_GEMFILE'] =~ /rails/
+require 'rspec'
+require 'pry'
+require 'webvalve'
+
+Dir[File.join(__dir__, 'support/**/*.rb')].each { |f| require f }
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
@@ -18,5 +26,7 @@ RSpec.configure do |config|
   config.order = :random
   Kernel.srand config.seed
 
-  # config.profile_examples = 10
+  config.profile_examples = 10
+
+  config.include Helpers
 end
