@@ -6,9 +6,14 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 
 ## [Unreleased]
 
+## [0.9.6] - 2018-06-27
+### Changed
+- fix changelog links
+
 ## [0.9.5] - 2018-06-27
 ### Changed
-- WebMock 3+ support from @messanjah
+- WebMock 3+ support from @messanjah (https://github.com/Betterment/webvalve/pull/22)
 
-[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.9.5...HEAD
-[0.9.5]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.9.4...v0.9.5
+[Unreleased]: https://github.com/Betterment/webvalve/compare/v0.9.6...HEAD
+[0.9.6]: https://github.com/Betterment/webvalve/compare/v0.9.5...v0.9.6
+[0.9.5]: https://github.com/Betterment/webvalve/compare/v0.9.4...v0.9.5
