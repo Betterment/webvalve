@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.description = "Betterment's library for developing and testing service-oriented apps in isolation with WebMock and Sinatra-based fakes."
   s.license     = "MIT"
 
-  s.files = Dir["{lib}/**/*", "LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{lib}/**/*", "LICENSE", "Rakefile", "README.md", "CHANGELOG.md"]
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency 'activesupport', '>= 4.2'
