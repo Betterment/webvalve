@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '>= 4.2'
   s.add_dependency 'sinatra', '>= 1.4', '< 3'
   s.add_dependency 'sinatra-contrib', '>= 1.4', '< 3'
-  s.add_dependency "webmock", "~> 2.0"
+  s.add_dependency "webmock", ">= 2.0"
 
   s.add_development_dependency 'appraisal', '~> 2.2.0'
   s.add_development_dependency "rspec"
