@@ -20,6 +20,10 @@ module WebValve
       end
     end
 
+    def whitelist_url_config
+      @whitelist_url_config ||= WhitelistUrlConfig.new(url: service_url, whitelist_in_spec: false)
+    end
+
     private
 
     attr_reader :custom_service_url

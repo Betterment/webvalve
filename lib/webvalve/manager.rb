@@ -12,9 +12,9 @@ module WebValve
       fake_service_configs << FakeServiceConfig.new(service: fake_service, **args)
     end
 
-    def whitelist_url(url)
-      raise "#{url} already registered" if whitelisted_urls.include?(url)
-      whitelisted_urls << url
+    def whitelist_url(url, **args)
+      raise "#{url} already registered" if whitelist_url_configs.any? { |c| c.url == url }
+      whitelist_url_configs << WhitelistUrlConfig.new(url: url, **args)
     end
 
     def setup
@@ -32,7 +32,7 @@ module WebValve
 
     # @api private
     def reset
-      whitelisted_urls.clear
+      whitelist_url_configs.clear
       fake_service_configs.clear
     end
 
@@ -42,20 +42,24 @@ module WebValve
     end
 
     # @api private
-    def whitelisted_urls
-      @whitelisted_urls ||= Set.new
+    def whitelist_url_configs
+      @whitelist_url_configs ||= Set.new
     end
 
     private
 
     def webmock_disable_options
       { allow_localhost: true }.tap do |opts|
-        opts[:allow] = whitelisted_url_regexps unless WebValve.env.test?
+        opts[:allow] = whitelisted_url_regexps
       end
     end
 
     def whitelisted_url_regexps
-      whitelisted_urls.map { |url| url_to_regexp url }
+      whitelist_url_configs.reject do |config|
+        WebValve.env.test? && !config.whitelist_in_spec
+      end.map do |config|
+        url_to_regexp config.url
+      end
     end
 
     def webmock_service(config)
@@ -66,7 +70,7 @@ module WebValve
     end
 
     def whitelist_service(config)
-      whitelisted_urls << config.service_url
+      whitelist_url_configs << config.whitelist_url_config
     end
 
     def url_to_regexp(url)

@@ -12,8 +12,22 @@ RSpec.describe WebValve::Manager do
     it 'raises on duplicates' do
       subject.whitelist_url "foo"
       expect { subject.whitelist_url "foo" }.to raise_error(/already registered/)
-      expect(subject.whitelisted_urls.count).to eq 1
-      expect(subject.whitelisted_urls).to contain_exactly(/foo/)
+      expect(subject.whitelist_url_configs.count).to eq 1
+      expect(subject.whitelist_url_configs.first).to be_a WebValve::WhitelistUrlConfig
+      subject.whitelist_url_configs.first.tap do |config|
+        expect(config.url).to eq "foo"
+        expect(config.whitelist_in_spec).to eq false
+      end
+    end
+
+    it 'accepts whitelist_in_spec argument' do
+      subject.whitelist_url "bar", whitelist_in_spec: true
+      expect(subject.whitelist_url_configs.count).to eq 1
+      expect(subject.whitelist_url_configs.first).to be_a WebValve::WhitelistUrlConfig
+      subject.whitelist_url_configs.first.tap do |config|
+        expect(config.url).to eq "bar"
+        expect(config.whitelist_in_spec).to eq true
+      end
     end
   end
 
@@ -69,17 +83,21 @@ RSpec.describe WebValve::Manager do
         end
       end
 
-      it 'does not whitelist configured urls in webmock' do
+      it 'does not whitelist configured urls in webmock, unless explicitly specified' do
         allow(WebMock).to receive(:disable_net_connect!)
-        results = [%r{\Ahttp://foo\.dev}, %r{\Ahttp://bar\.dev}]
+        allowed_results = [%r{\Ahttp://baz\.dev}]
+        disallowed_results = [%r{\Ahttp://foo\.dev}, %r{\Ahttp://bar\.dev}]
 
         subject.whitelist_url 'http://foo.dev'
         subject.whitelist_url 'http://bar.dev'
+        subject.whitelist_url 'http://baz.dev', whitelist_in_spec: true
 
         subject.setup
 
+        expect(WebMock).to have_received(:disable_net_connect!)
+          .with(hash_including(allow: allowed_results))
         expect(WebMock).not_to have_received(:disable_net_connect!)
-          .with(hash_including(allow: results))
+          .with(hash_including(allow: disallowed_results))
       end
     end
 
@@ -125,7 +143,7 @@ RSpec.describe WebValve::Manager do
           subject.setup
         end
 
-        expect(subject.whitelisted_urls).to include 'http://real.dev'
+        expect(subject.whitelist_url_configs.map(&:url)).to include 'http://real.dev'
       end
     end
   end
