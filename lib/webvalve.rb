@@ -16,6 +16,7 @@ module WebValve
     # @!method reset
     #   @see WebValve::Manager#reset
     delegate :setup, :register, :whitelist_url, :reset, to: :manager
+    attr_writer :logger
 
     def enabled?
       if env.in?(ALWAYS_ENABLED_ENVS)
@@ -35,8 +36,24 @@ module WebValve
       @config_paths ||= Set.new
     end
 
+    def logger
+      @logger ||=
+        if defined?(::Rails)
+          # Rails.logger can be nil
+          ::Rails.logger || default_logger
+        else
+          default_logger
+        end
+    end
+
+    def default_logger
+      ActiveSupport::Logger.new(STDOUT).tap do |l|
+        l.formatter = ::Logger::Formatter.new
+      end
+    end
+
     if defined?(::Rails)
-      delegate :env, :env=, :logger, :logger=, to: ::Rails
+      delegate :env, :env=, to: ::Rails
     else
       def env
         @env ||= (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development').inquiry
@@ -44,16 +61,6 @@ module WebValve
 
       def env=(env)
         @env = env&.inquiry
-      end
-
-      def logger
-        @logger ||= ActiveSupport::Logger.new(STDOUT).tap do |l|
-          l.formatter = ::Logger::Formatter.new
-        end
-      end
-
-      def logger=(logger)
-        @logger = logger
       end
     end
 
