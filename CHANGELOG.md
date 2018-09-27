@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Improved WEBVALVED_ENABLED behavior from @haffla (https://github.com/Betterment/webvalve/pull/24)
 
 ## [0.9.6] - 2018-06-27
 ### Changed
