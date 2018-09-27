@@ -20,7 +20,7 @@ module WebValve
     def enabled?
       if env.in?(ALWAYS_ENABLED_ENVS)
         if ENV.key? 'WEBVALVE_ENABLED'
-          logger.warn(<<~MESSAGE)
+          logger&.warn(<<~MESSAGE)
             WARNING: Ignoring WEBVALVE_ENABLED environment variable setting (#{ENV['WEBVALVE_ENABLED']})
             WebValve is always enabled in development and test environments.
           MESSAGE
