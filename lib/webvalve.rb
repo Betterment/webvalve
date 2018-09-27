@@ -37,7 +37,7 @@ module WebValve
 
     def logger
       if defined?(::Rails)
-        ::Rails.logger | default_logger
+        ::Rails.logger || default_logger
       else
         default_logger
       end
