@@ -44,7 +44,7 @@ module WebValve
     end
 
     def default_logger
-      @default_logger ||= ActiveSupport::Logger.new(STDOUT).tap do |l|
+      @logger ||= ActiveSupport::Logger.new(STDOUT).tap do |l|
         l.formatter = ::Logger::Formatter.new
       end
     end
