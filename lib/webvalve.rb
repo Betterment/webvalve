@@ -20,7 +20,7 @@ module WebValve
     def enabled?
       if env.in?(ALWAYS_ENABLED_ENVS)
         if ENV.key? 'WEBVALVE_ENABLED'
-          logger&.warn(<<~MESSAGE)
+          logger.warn(<<~MESSAGE)
             WARNING: Ignoring WEBVALVE_ENABLED environment variable setting (#{ENV['WEBVALVE_ENABLED']})
             WebValve is always enabled in development and test environments.
           MESSAGE
@@ -35,8 +35,22 @@ module WebValve
       @config_paths ||= Set.new
     end
 
+    def logger
+      if defined?(::Rails)
+        ::Rails.logger | default_logger
+      else
+        default_logger
+      end
+    end
+
+    def default_logger
+      @default_logger ||= ActiveSupport::Logger.new(STDOUT).tap do |l|
+        l.formatter = ::Logger::Formatter.new
+      end
+    end
+
     if defined?(::Rails)
-      delegate :env, :env=, :logger, :logger=, to: ::Rails
+      delegate :env, :env=, :logger=, to: ::Rails
     else
       def env
         @env ||= (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development').inquiry
@@ -44,12 +58,6 @@ module WebValve
 
       def env=(env)
         @env = env&.inquiry
-      end
-
-      def logger
-        @logger ||= ActiveSupport::Logger.new(STDOUT).tap do |l|
-          l.formatter = ::Logger::Formatter.new
-        end
       end
 
       def logger=(logger)
