@@ -4,12 +4,12 @@ rvm:
   - 2.4.2
   - jruby-9.1.9.0
 gemfile:
-  - gemfiles/rails_4_2.gemfile
   - gemfiles/rails_5_0.gemfile
   - gemfiles/rails_5_1.gemfile
   - gemfiles/ruby.gemfile
 before_install:
   - gem update --system
-  - gem install bundler -v '< 2'
+  - gem update bundler
+  - gem pristine bundler
   - gem cleanup bundler
 install: "bundle install --jobs 8"
