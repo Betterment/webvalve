@@ -10,7 +10,7 @@ module WebValve
       end
     end
 
-    initializer 'webvalve.setup' do
+    initializer 'webvalve.setup', after: :load_config_initializers do
       if WebValve.enabled?
         WebValve.config_paths.each do |root|
           path = root.join('config', 'webvalve.rb').to_s

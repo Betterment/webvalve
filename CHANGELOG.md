@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+### Added
+### Removed
+
+## [0.9.8] - 2019-01-22
+### Changed
+- fix load order of webvalve initializer from @jmileham (https://github.com/Betterment/webvalve/pull/26)
+- drop support for rails 4.2 and jruby
 
 ## [0.9.7] - 2018-09-30
 ### Changed
@@ -18,7 +26,8 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Changed
 - WebMock 3+ support from @messanjah (https://github.com/Betterment/webvalve/pull/22)
 
-[Unreleased]: https://github.com/Betterment/webvalve/compare/v0.9.7...HEAD
+[Unreleased]: https://github.com/Betterment/webvalve/compare/v0.9.8...HEAD
+[0.9.8]: https://github.com/Betterment/webvalve/compare/v0.9.7...v0.9.8
 [0.9.7]: https://github.com/Betterment/webvalve/compare/v0.9.6...v0.9.7
 [0.9.6]: https://github.com/Betterment/webvalve/compare/v0.9.5...v0.9.6
 [0.9.5]: https://github.com/Betterment/webvalve/compare/v0.9.4...v0.9.5
