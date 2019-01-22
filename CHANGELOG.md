@@ -11,7 +11,8 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 
 ## [0.9.8] - 2019-01-22
 ### Changed
-- Improved WEBVALVED_ENABLED behavior from @jmileham (https://github.com/Betterment/webvalve/pull/26)
+- fix load order of webvalve initializer from @jmileham (https://github.com/Betterment/webvalve/pull/26)
+- drop support for rails 4.2 and jruby
 
 ## [0.9.7] - 2018-09-30
 ### Changed
