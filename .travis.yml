@@ -10,7 +10,6 @@ gemfile:
   - gemfiles/ruby.gemfile
 before_install:
   - gem update --system
-  - gem update bundler
-  - gem pristine bundler
+  - gem install bundler -v '< 2'
   - gem cleanup bundler
 install: "bundle install --jobs 8"
