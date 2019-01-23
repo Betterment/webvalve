@@ -151,8 +151,34 @@ is a configuration provided.
 require 'webvalve/rspec'
 ```
 
-For any other test framework, you will just want to set up a hook before
-each test that will run `WebValve.setup`.
+If you are using 
+[rspec-retry](https://github.com/NoRedInk/rspec-retry), you'll have to
+manually register your around hook, instead, to ensure that WebValve
+resets its configuration for each retry, e.g.:
+
+```ruby
+# spec/[rails|spec]_helper.rb
+
+# your require lines omitted ...
+require 'webmock/rspec' # set up webmock lifecycle hooks - required
+
+RSpec.configure do |config|
+  # your config lines omitted ...
+
+  config.around :each do |ex|
+    ex.run_with_retry retry: 2
+  end
+  
+  config.around :each do |ex|
+    WebValve.setup
+    ex.run
+  end
+end
+```
+
+For any other test framework, you will want to similarly set up webmock
+lifecycle hooks, and add a custom hook that will run `WebValve.setup` before
+each test.
 
 ## Setting deterministic fake results in tests
 
