@@ -11,11 +11,11 @@ module WebValve
     #   @see WebValve::Manager#setup
     # @!method register
     #   @see WebValve::Manager#register
-    # @!method whitelist_url
-    #   @see WebValve::Manager#whitelist_url
+    # @!method add_url_to_allowlist
+    #   @see WebValve::Manager#add_url_to_allowlist
     # @!method reset
     #   @see WebValve::Manager#reset
-    delegate :setup, :register, :whitelist_url, :reset, to: :manager
+    delegate :setup, :register, :add_url_to_allowlist, :reset, to: :manager
     attr_writer :logger
 
     def enabled?

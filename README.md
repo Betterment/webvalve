@@ -71,9 +71,9 @@ This will drop a new file in your config directory.
 # WebValve.register FakeBank
 # WebValve.register FakeExample, url: 'https://api.example.org'
 #
-# # whitelist urls
+# # add urls to allowlist
 #
-# WebValve.whitelist_url 'https://example.com'
+# WebValve.add_url_to_allowlist 'https://example.com'
 ```
 
 If you're not using Rails, you can create this file for yourself.

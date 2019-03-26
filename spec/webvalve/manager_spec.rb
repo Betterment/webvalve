@@ -8,12 +8,12 @@ RSpec.describe WebValve::Manager do
     described_class.is_a? Singleton
   end
 
-  describe '#whitelist_url' do
+  describe '#add_url_to_allowlist' do
     it 'raises on duplicates' do
-      subject.whitelist_url "foo"
-      expect { subject.whitelist_url "foo" }.to raise_error(/already registered/)
-      expect(subject.whitelisted_urls.count).to eq 1
-      expect(subject.whitelisted_urls).to contain_exactly(/foo/)
+      subject.add_url_to_allowlist "foo"
+      expect { subject.add_url_to_allowlist "foo" }.to raise_error(/already registered/)
+      expect(subject.allowlisted_urls.count).to eq 1
+      expect(subject.allowlisted_urls).to contain_exactly(/foo/)
     end
   end
 
@@ -69,12 +69,12 @@ RSpec.describe WebValve::Manager do
         end
       end
 
-      it 'does not whitelist configured urls in webmock' do
+      it 'does not allowlist configured urls in webmock' do
         allow(WebMock).to receive(:disable_net_connect!)
         results = [%r{\Ahttp://foo\.dev}, %r{\Ahttp://bar\.dev}]
 
-        subject.whitelist_url 'http://foo.dev'
-        subject.whitelist_url 'http://bar.dev'
+        subject.add_url_to_allowlist 'http://foo.dev'
+        subject.add_url_to_allowlist 'http://bar.dev'
 
         subject.setup
 
@@ -90,12 +90,12 @@ RSpec.describe WebValve::Manager do
         end
       end
 
-      it 'whitelists configured urls in webmock' do
+      it 'allowlists configured urls in webmock' do
         allow(WebMock).to receive(:disable_net_connect!)
         results = [%r{\Ahttp://foo\.dev}, %r{\Ahttp://bar\.dev}]
 
-        subject.whitelist_url 'http://foo.dev'
-        subject.whitelist_url 'http://bar.dev'
+        subject.add_url_to_allowlist 'http://foo.dev'
+        subject.add_url_to_allowlist 'http://bar.dev'
 
         subject.setup
 
@@ -117,7 +117,7 @@ RSpec.describe WebValve::Manager do
         expect(web_mock_stubble).to have_received(:to_rack)
       end
 
-      it 'whitelists registered fakes that are enabled in ENV' do
+      it 'allowlists registered fakes that are enabled in ENV' do
         enabled_service = class_double(WebValve::FakeService, name: 'FakeSomething')
 
         with_env 'SOMETHING_ENABLED' => '1', 'SOMETHING_API_URL' => 'http://real.dev' do
@@ -125,7 +125,7 @@ RSpec.describe WebValve::Manager do
           subject.setup
         end
 
-        expect(subject.whitelisted_urls).to include 'http://real.dev'
+        expect(subject.allowlisted_urls).to include 'http://real.dev'
       end
     end
   end

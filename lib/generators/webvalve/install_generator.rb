@@ -19,9 +19,9 @@ module Webvalve
           # WebValve.register FakeThing
           # WebValve.register FakeExample, url: 'https://api.example.org'
           #
-          # # whitelist urls
+          # # add urls to the allowlist
           #
-          # WebValve.whitelist_url 'https://example.com'
+          # WebValve.add_url_to_allowlist 'https://example.com'
         FILE
       end
 
