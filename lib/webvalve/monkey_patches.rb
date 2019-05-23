@@ -6,7 +6,14 @@
 #
 # and the v3.5.1 release of webmock gem
 # https://github.com/bblimke/webmock/blob/v3.5.1/lib/webmock/http_lib_adapters/net_http.rb#L12
-if defined?(Webdrivers)
+webdrivers = begin
+  require "webdrivers"
+  true
+rescue LoadError
+  false
+end
+
+if webdrivers
   class Webdrivers::Network
     class << self
       def http
