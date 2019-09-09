@@ -13,7 +13,7 @@ RSpec.describe WebValve do
     expect(described_class).to respond_to(:reset)
   end
 
-  it 'delegates .whitelist_url to manager' do
-    expect(described_class).to respond_to(:whitelist_url)
+  it 'delegates .allow_url to manager' do
+    expect(described_class).to respond_to(:allow_url)
   end
 end
