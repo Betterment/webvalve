@@ -21,7 +21,7 @@ module Webvalve
           #
           # # add urls to the allowlist
           #
-          # WebValve.add_url_to_allowlist 'https://example.com'
+          # WebValve.allowlist_url 'https://example.com'
         FILE
       end
 

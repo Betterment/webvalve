@@ -12,7 +12,7 @@ module WebValve
       fake_service_configs << FakeServiceConfig.new(service: fake_service, **args)
     end
 
-    def add_url_to_allowlist(url)
+    def allowlist_url(url)
       raise "#{url} already registered" if allowlisted_urls.include?(url)
       allowlisted_urls << url
     end

@@ -8,10 +8,10 @@ RSpec.describe WebValve::Manager do
     described_class.is_a? Singleton
   end
 
-  describe '#add_url_to_allowlist' do
+  describe '#allowlist_url' do
     it 'raises on duplicates' do
-      subject.add_url_to_allowlist "foo"
-      expect { subject.add_url_to_allowlist "foo" }.to raise_error(/already registered/)
+      subject.allowlist_url "foo"
+      expect { subject.allowlist_url "foo" }.to raise_error(/already registered/)
       expect(subject.allowlisted_urls.count).to eq 1
       expect(subject.allowlisted_urls).to contain_exactly(/foo/)
     end
@@ -73,8 +73,8 @@ RSpec.describe WebValve::Manager do
         allow(WebMock).to receive(:disable_net_connect!)
         results = [%r{\Ahttp://foo\.dev}, %r{\Ahttp://bar\.dev}]
 
-        subject.add_url_to_allowlist 'http://foo.dev'
-        subject.add_url_to_allowlist 'http://bar.dev'
+        subject.allowlist_url 'http://foo.dev'
+        subject.allowlist_url 'http://bar.dev'
 
         subject.setup
 
@@ -94,8 +94,8 @@ RSpec.describe WebValve::Manager do
         allow(WebMock).to receive(:disable_net_connect!)
         results = [%r{\Ahttp://foo\.dev}, %r{\Ahttp://bar\.dev}]
 
-        subject.add_url_to_allowlist 'http://foo.dev'
-        subject.add_url_to_allowlist 'http://bar.dev'
+        subject.allowlist_url 'http://foo.dev'
+        subject.allowlist_url 'http://bar.dev'
 
         subject.setup
 
