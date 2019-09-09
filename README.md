@@ -73,7 +73,7 @@ This will drop a new file in your config directory.
 #
 # # add urls to allowlist
 #
-# WebValve.add_url_to_allowlist 'https://example.com'
+# WebValve.allowlist_url 'https://example.com'
 ```
 
 If you're not using Rails, you can create this file for yourself.
