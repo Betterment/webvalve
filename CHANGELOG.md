@@ -9,6 +9,10 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
+## [0.9.10] - 2019-09-09
+### Changed
+- rename `whitelist_url` to `allow_url` (https://github.com/Betterment/retail/pull/4424)
+
 ## [0.9.9] - 2019-05-24
 ### Changed
 - fix integration with `webdrivers` gem so Rails 6 should work out of the box (https://github.com/Betterment/webvalve/pull/32)
@@ -31,6 +35,7 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 - WebMock 3+ support from @messanjah (https://github.com/Betterment/webvalve/pull/22)
 
 [Unreleased]: https://github.com/Betterment/webvalve/compare/v0.9.9...HEAD
+[0.9.10]: https://github.com/Betterment/webvalve/compare/v0.9.9...v0.9.10
 [0.9.9]: https://github.com/Betterment/webvalve/compare/v0.9.8...v0.9.9
 [0.9.8]: https://github.com/Betterment/webvalve/compare/v0.9.7...v0.9.8
 [0.9.7]: https://github.com/Betterment/webvalve/compare/v0.9.6...v0.9.7
