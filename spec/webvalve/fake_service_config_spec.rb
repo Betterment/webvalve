@@ -114,8 +114,8 @@ RSpec.describe WebValve::FakeServiceConfig do
           end
         end
 
-        it 'returns true' do
-          expect(subject.should_intercept?).to eq true
+        it 'still returns false by default' do
+          expect(subject.should_intercept?).to eq false
         end
 
         it 'respects DUMMY_ENABLED flag' do

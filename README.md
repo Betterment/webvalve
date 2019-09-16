@@ -232,7 +232,10 @@ not registered.
 Yes! By default WebValve is only enabled in test and development
 environments; however, it can be enabled in other environments by
 setting `WEBVALVE_ENABLED=true`. This can be useful for spinning up
-cheap, one-off environments for user-testing or demos.
+cheap, one-off environments for user-testing or demos. When WebValve is
+enabled in any environment other than development/test it will default
+services to enabled rather than disabled. This ensures that
+production-like environments are run integrated by default.
 
 > Can I use WebValve without Rails?
 

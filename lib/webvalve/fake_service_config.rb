@@ -8,8 +8,20 @@ module WebValve
     end
 
     def should_intercept?
-      WebValve.env.test? || # always intercept in test
-        (WebValve.enabled? && !service_enabled_in_env?)
+      return true if WebValve.env.test? # always intercept in test
+
+      return false unless WebValve.enabled?
+
+      if WebValve.env.development?
+        # for local development we wanna default to all services disabled
+        # so that we get  nice isolated fake-driven development
+        !service_enabled_in_env?(default: false)
+      else
+        # in any production-like environment, default to all services enabled
+        # so that we get integrated behavior by default but we can opt specific
+        # services into fake mode
+        !service_enabled_in_env?(default: true)
+      end
     end
 
     def service_url
@@ -36,8 +48,9 @@ module WebValve
       url.to_s.sub(%r(\Ahttp(s)?://[^@/]+@), 'http\1://')
     end
 
-    def service_enabled_in_env?
-      WebValve::ENABLED_VALUES.include?(ENV["#{service_name.to_s.upcase}_ENABLED"])
+    def service_enabled_in_env?(default:)
+      value = ENV.fetch("#{service_name.to_s.upcase}_ENABLED", default).to_s
+      WebValve::ENABLED_VALUES.include?(value)
     end
 
     def default_service_url
