@@ -49,8 +49,8 @@ module WebValve
     end
 
     def service_enabled_in_env?(default:)
-      value = ENV.fetch("#{service_name.to_s.upcase}_ENABLED", default).to_s
-      WebValve::ENABLED_VALUES.include?(value)
+      value = ENV.fetch("#{service_name.to_s.upcase}_ENABLED", default)
+      WebValve::ENABLED_VALUES.include?(value.to_s)
     end
 
     def default_service_url
