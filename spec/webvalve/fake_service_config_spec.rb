@@ -114,7 +114,7 @@ RSpec.describe WebValve::FakeServiceConfig do
           end
         end
 
-        it 'still returns false by default' do
+        it 'returns returns false when DUMMY_ENABLED is unset' do
           expect(subject.should_intercept?).to eq false
         end
 
