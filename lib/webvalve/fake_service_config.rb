@@ -14,7 +14,7 @@ module WebValve
 
       if WebValve.env.development?
         # for local development we wanna default to all services disabled
-        # so that we get  nice isolated fake-driven development
+        # so that we get nice isolated fake-driven development
         !service_enabled_in_env?(default: false)
       else
         # in any production-like environment, default to all services enabled
