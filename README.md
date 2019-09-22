@@ -40,13 +40,13 @@ is a warning that the requested URL was not mocked. This behavior comes
 straight outta WebMock.
 
 ```ruby
-irb(main):007:0> Net::HTTP.get(URI('http://bank.dev'))
+irb(main):007:0> Net::HTTP.get(URI('http://bank.test'))
 
-WebMock::NetConnectNotAllowedError: Real HTTP connections are disabled. Unregistered request: GET http://bank.dev/ with headers {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}
+WebMock::NetConnectNotAllowedError: Real HTTP connections are disabled. Unregistered request: GET http://bank.test/ with headers {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}
 
 You can stub this request with the following snippet:
 
-stub_request(:get, "http://bank.dev/").
+stub_request(:get, "http://bank.test/").
   with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
   to_return(:status => 200, :body => "", :headers => {})
 
@@ -68,12 +68,12 @@ This will drop a new file in your config directory.
 
 # # register services
 #
-# WebValve.register FakeBank
-# WebValve.register FakeExample, url: 'https://api.example.org'
+# WebValve.register "FakeBank"
+# WebValve.register "FakeExample", url: "https://api.example.org"
 #
 # # add urls to allowlist
 #
-# WebValve.allow_url 'https://example.com'
+# WebValve.allow_url "https://example.com"
 ```
 
 If you're not using Rails, you can create this file for yourself.
@@ -113,7 +113,7 @@ And it will automatically register it in `config/webvalve.rb`
 
 ```ruby
 # config/webvalve.rb
-WebValve.register FakeBank
+WebValve.register "FakeBank"
 ```
 
 Again, if you're not using Rails, you'll have to create this file
@@ -123,7 +123,7 @@ You'll also want to define an environment variable for the base url of
 your service.
 
 ```bash
-export BANK_API_URL='http://bank.dev'
+export BANK_API_URL='http://bank.test'
 ```
 
 That's it. Now when you hit your service again, it will route your
@@ -189,10 +189,10 @@ endpoint in a test, we can just use WebMock™.
 # in an rspec test...
 
 it 'handles 404s by returning nil' do
-  fake_req = stub_request('http://bank.dev/some/url/1234')
+  fake_req = stub_request('http://bank.test/some/url/1234')
     .to_return(status: 404, body: nil)
 
-  response = Faraday.get 'http://bank.dev/some/url/1234'
+  response = Faraday.get 'http://bank.test/some/url/1234'
   expect(response.body).to be_nil
   expect(fake_req).to have_been_requested
 end

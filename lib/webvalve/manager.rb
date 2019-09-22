@@ -7,9 +7,10 @@ module WebValve
   class Manager
     include Singleton
 
-    def register(fake_service, **args)
-      raise "#{fake_service.inspect} already registered" if fake_service_configs.any? { |c| c.service == fake_service }
-      fake_service_configs << FakeServiceConfig.new(service: fake_service, **args)
+    def register(fake_service_class_name, **args)
+      raise "register must be called with a string to comply with Rails autoloading" unless fake_service_class_name.is_a?(String)
+      raise "#{fake_service_class_name.inspect} already registered" if fake_service_configs.any? { |c| c.service_class_name == fake_service_class_name }
+      fake_service_configs << FakeServiceConfig.new(service_class_name: fake_service_class_name, **args)
     end
 
     def allow_url(url)
@@ -62,7 +63,7 @@ module WebValve
       WebMock.stub_request(
         :any,
         url_to_regexp(config.service_url)
-      ).to_rack(FakeServiceWrapper.new(config.service))
+      ).to_rack(FakeServiceWrapper.new(config.service_class_name))
     end
 
     def allowlist_service(config)

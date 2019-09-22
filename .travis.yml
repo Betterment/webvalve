@@ -2,9 +2,13 @@ language: ruby
 rvm:
   - 2.3.1
   - 2.4.2
+  - 2.5.1
+  - 2.6.1
 gemfile:
   - gemfiles/rails_5_0.gemfile
   - gemfiles/rails_5_1.gemfile
+  - gemfiles/rails_5_2.gemfile
+  - gemfiles/rails_6_0.gemfile
   - gemfiles/ruby.gemfile
 before_install:
   - gem update --system
@@ -12,3 +16,9 @@ before_install:
   - gem pristine bundler
   - gem cleanup bundler
 install: "bundle install --jobs 8"
+matrix:
+  exclude:
+  - rvm: 2.3.1
+    gemfile: gemfiles/rails_6_0.gemfile
+  - rvm: 2.4.2
+    gemfile: gemfiles/rails_6_0.gemfile

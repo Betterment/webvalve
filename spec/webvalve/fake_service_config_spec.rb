@@ -17,7 +17,7 @@ RSpec.describe WebValve::FakeServiceConfig do
     stub_const('FakeDummy', fake_service)
   end
 
-  subject { described_class.new service: fake_service }
+  subject { described_class.new service_class_name: fake_service.name }
 
   describe '.should_intercept?' do
     context 'in test env' do
@@ -136,7 +136,7 @@ RSpec.describe WebValve::FakeServiceConfig do
       expect { subject.service_url }.to raise_error <<~MESSAGE
         There is no URL defined for FakeDummy.
         Configure one by setting the ENV variable "DUMMY_API_URL"
-        or by using WebValve.register FakeDummy, url: "http://something.dev"
+        or by using WebValve.register "FakeDummy", url: "http://something.dev"
       MESSAGE
     end
 
