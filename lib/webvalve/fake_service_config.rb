@@ -1,9 +1,9 @@
 module WebValve
   class FakeServiceConfig
-    attr_reader :service
+    attr_reader :service_class_name
 
-    def initialize(service:, url: nil)
-      @service = service
+    def initialize(service_class_name:, url: nil)
+      @service_class_name = service_class_name
       @custom_service_url = url
     end
 
@@ -26,9 +26,9 @@ module WebValve
 
     def missing_url_message
       <<~MESSAGE
-        There is no URL defined for #{service.name}.
+        There is no URL defined for #{service_class_name}.
         Configure one by setting the ENV variable "#{service_name.to_s.upcase}_API_URL"
-        or by using WebValve.register #{service.name}, url: "http://something.dev"
+        or by using WebValve.register "#{service_class_name}", url: "http://something.dev"
       MESSAGE
     end
 
@@ -45,7 +45,7 @@ module WebValve
     end
 
     def service_name
-      @service_name ||= service.name.demodulize.underscore.sub 'fake_', ''
+      @service_name ||= service_class_name.demodulize.underscore.sub 'fake_', ''
     end
   end
 end

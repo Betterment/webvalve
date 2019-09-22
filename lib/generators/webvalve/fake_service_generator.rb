@@ -37,7 +37,7 @@ module Webvalve
 
       def register_fake_in_config
         append_to_file config_file_path do <<~RUBY
-          WebValve.register #{fake_service_class_name}
+          WebValve.register "#{fake_service_class_name}"
         RUBY
         end
       end

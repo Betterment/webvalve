@@ -1,8 +1,8 @@
 module WebValve
   class FakeServiceWrapper
     # lazily resolve the app constant to leverage rails class reloading
-    def initialize(app)
-      @app_klass_name = app.name
+    def initialize(app_class_name)
+      @app_class_name = app_class_name
     end
 
     def call(env)
@@ -12,7 +12,7 @@ module WebValve
     private
 
     def app
-      @app_klass_name.constantize
+      @app_class_name.constantize
     end
   end
 end

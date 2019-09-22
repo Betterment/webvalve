@@ -17,22 +17,22 @@ RSpec.describe WebValve::Manager do
     end
   end
 
-  describe '#register(fake_service)' do
+  describe '#register(fake_service_class_name)' do
     it 'raises on duplicates' do
-      fake = class_double(WebValve::FakeService)
+      fake = class_double(WebValve::FakeService, name: "FooService")
 
-      subject.register fake
-      expect { subject.register fake }.to raise_error(/already registered/)
+      subject.register fake.name
+      expect { subject.register fake.name }.to raise_error(/already registered/)
       expect(subject.fake_service_configs.count).to eq 1
-      expect(subject.fake_service_configs.first.service).to eq fake
+      expect(subject.fake_service_configs.first.service_class_name).to eq fake.name
     end
   end
 
-  describe '#register(fake_service, url:)' do
+  describe '#register(fake_service_class_name, url:)' do
     it 'stores the url' do
-      fake = class_double(WebValve::FakeService)
+      fake = class_double(WebValve::FakeService, name: "FooService")
 
-      subject.register fake, url: 'http://manual.dev'
+      subject.register fake.name, url: 'http://manual.dev'
       expect(subject.fake_service_configs.first.service_url).to eq 'http://manual.dev'
     end
   end
@@ -109,7 +109,7 @@ RSpec.describe WebValve::Manager do
         allow(WebMock).to receive(:stub_request).and_return(web_mock_stubble)
 
         with_env 'SOMETHING_API_URL' => 'http://fake.dev' do
-          subject.register disabled_service
+          subject.register disabled_service.name
           subject.setup
         end
 
@@ -121,7 +121,7 @@ RSpec.describe WebValve::Manager do
         enabled_service = class_double(WebValve::FakeService, name: 'FakeSomething')
 
         with_env 'SOMETHING_ENABLED' => '1', 'SOMETHING_API_URL' => 'http://real.dev' do
-          subject.register enabled_service
+          subject.register enabled_service.name
           subject.setup
         end
 

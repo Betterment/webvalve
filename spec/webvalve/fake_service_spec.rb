@@ -28,7 +28,7 @@ RSpec.describe WebValve::FakeService do
 
     it 'raise a useful error when an unmapped route is requested' do
       with_env 'DUMMY_API_URL' => 'http://dummy.dev' do
-        WebValve.register subject
+        WebValve.register subject.name
         WebValve.setup
 
         expect { Net::HTTP.get(URI('http://dummy.dev/foos')) }.to raise_error(RuntimeError, /route not defined for GET/)
@@ -37,7 +37,7 @@ RSpec.describe WebValve::FakeService do
 
     it 'returns the result from the fake when a mapped route is requested' do
       with_env 'DUMMY_API_URL' => 'http://dummy.dev' do
-        WebValve.register subject
+        WebValve.register subject.name
         WebValve.setup
 
         expect(Net::HTTP.get(URI('http://dummy.dev/widgets'))).to eq({ result: 'it works!' }.to_json)

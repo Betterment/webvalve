@@ -16,12 +16,12 @@ module Webvalve
         create_file full_file_path, <<-FILE.strip_heredoc
           # # register services
           #
-          # WebValve.register FakeThing
-          # WebValve.register FakeExample, url: 'https://api.example.org'
+          # WebValve.register "FakeThing"
+          # WebValve.register "FakeExample", url: "https://api.example.org"
           #
           # # add urls to the allowlist
           #
-          # WebValve.allow_url 'https://example.com'
+          # WebValve.allow_url "https://example.com"
         FILE
       end
 
