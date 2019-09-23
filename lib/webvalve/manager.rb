@@ -51,6 +51,11 @@ module WebValve
     end
 
     # @api private
+    def disabled?
+      !intercepting? && !allowing?
+    end
+
+    # @api private
     def intercepting?
       in_always_intercepting_env? || ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
     end
@@ -78,22 +83,10 @@ module WebValve
 
     private
 
-    def disabled?
-      !intercepting? && !allowing?
-    end
-
-    def intercepting?
-      in_always_intercepting_env? || ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
-    end
-
-    def allowing?
-      !in_always_intercepting_env? && DISABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
-    end
-
     def in_always_intercepting_env?
       if WebValve.env.in?(ALWAYS_ENABLED_ENVS)
         if ENV.key? 'WEBVALVE_ENABLED'
-          logger.warn(<<~MESSAGE)
+          WebValve.logger.warn(<<~MESSAGE)
             WARNING: Ignoring WEBVALVE_ENABLED environment variable setting (#{ENV['WEBVALVE_ENABLED']})
             WebValve is always enabled in development and test environments.
           MESSAGE

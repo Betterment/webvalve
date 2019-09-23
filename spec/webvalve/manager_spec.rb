@@ -241,4 +241,218 @@ RSpec.describe WebValve::Manager do
       end
     end
   end
+
+  describe '.intercepting?' do
+    context 'in test env' do
+      around do |ex|
+        with_rails_env 'test' do
+          ex.run
+        end
+      end
+
+      it 'returns true when WEBVALVE_ENABLED is unset' do
+        expect(subject.intercepting?).to eq true
+      end
+
+      it 'returns true regardless of WEBVALVE_ENABLED value' do
+        allow(WebValve.logger).to receive(:warn)
+
+        with_env 'WEBVALVE_ENABLED' => '1' do
+          expect(subject.intercepting?).to eq true
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+
+        with_env 'WEBVALVE_ENABLED' => '0' do
+          expect(subject.intercepting?).to eq true
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+      end
+    end
+
+    context 'in development env' do
+      around do |ex|
+        with_rails_env 'development' do
+          ex.run
+        end
+      end
+
+      it 'returns true when WEBVALVE_ENABLED is unset' do
+        expect(subject.intercepting?).to eq true
+      end
+
+      it 'returns true regardless of WEBVALVE_ENABLED value' do
+        allow(WebValve.logger).to receive(:warn)
+
+        with_env 'WEBVALVE_ENABLED' => '1' do
+          expect(subject.intercepting?).to eq true
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+
+        with_env 'WEBVALVE_ENABLED' => '0' do
+          expect(subject.intercepting?).to eq true
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+      end
+
+      it 'returns true when WEBVALVE_ENABLED is unset' do
+        with_env 'WEBVALVE_ENABLED' => nil do
+          expect(subject.intercepting?).to eq true
+        end
+      end
+    end
+
+    context 'in production enviroment' do
+      around do |ex|
+        with_rails_env 'production' do
+          ex.run
+        end
+      end
+
+      it 'return false when WEBVALVE_ENABLED is unset' do
+        with_env 'WEBVALVE_ENABLED' => nil do
+          expect(subject.intercepting?).to eq false
+        end
+      end
+
+      it 'returns true when WEBVALVE_ENABLED is truthy' do
+        with_env 'WEBVALVE_ENABLED' => '1' do
+          expect(subject.intercepting?).to eq true
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 't' do
+          expect(subject.intercepting?).to eq true
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'true' do
+          expect(subject.intercepting?).to eq true
+        end
+      end
+
+      it 'returns false when WEBVALVE_ENABLED is not truthy' do
+        with_env 'WEBVALVE_ENABLED' => '0' do
+          expect(subject.intercepting?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'f' do
+          expect(subject.intercepting?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'false' do
+          expect(subject.intercepting?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'not true or false' do
+          expect(subject.intercepting?).to eq false
+        end
+      end
+    end
+  end
+
+  describe '.allowing?' do
+    context 'in test env' do
+      around do |ex|
+        with_rails_env 'test' do
+          ex.run
+        end
+      end
+
+      it 'returns false when WEBVALVE_ENABLED is unset' do
+        expect(subject.allowing?).to eq false
+      end
+
+      it 'returns false regardless of WEBVALVE_ENABLED value' do
+        allow(WebValve.logger).to receive(:warn)
+
+        with_env 'WEBVALVE_ENABLED' => '1' do
+          expect(subject.allowing?).to eq false
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+
+        with_env 'WEBVALVE_ENABLED' => '0' do
+          expect(subject.allowing?).to eq false
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+      end
+    end
+
+    context 'in development env' do
+      around do |ex|
+        with_rails_env 'development' do
+          ex.run
+        end
+      end
+
+      it 'returns false when WEBVALVE_ENABLED is unset' do
+        expect(subject.allowing?).to eq false
+      end
+
+      it 'returns false regardless of WEBVALVE_ENABLED value' do
+        allow(WebValve.logger).to receive(:warn)
+
+        with_env 'WEBVALVE_ENABLED' => '1' do
+          expect(subject.allowing?).to eq false
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+
+        with_env 'WEBVALVE_ENABLED' => '0' do
+          expect(subject.allowing?).to eq false
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+      end
+
+      it 'returns false when WEBVALVE_ENABLED is unset' do
+        with_env 'WEBVALVE_ENABLED' => nil do
+          expect(subject.allowing?).to eq false
+        end
+      end
+    end
+
+    context 'in production enviroment' do
+      around do |ex|
+        with_rails_env 'production' do
+          ex.run
+        end
+      end
+
+      it 'return true when WEBVALVE_ENABLED is unset' do
+        with_env 'WEBVALVE_ENABLED' => nil do
+          # FIXME: if we remove disabled? then this should be true
+          expect(subject.allowing?).to eq false
+        end
+      end
+
+
+      it 'returns true when WEBVALVE_ENABLED is falsey' do
+        with_env 'WEBVALVE_ENABLED' => '0' do
+          expect(subject.allowing?).to eq true
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'f' do
+          expect(subject.allowing?).to eq true
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'false' do
+          expect(subject.allowing?).to eq true
+        end
+      end
+
+      it 'returns false when WEBVALVE_ENABLED is truthy' do
+        with_env 'WEBVALVE_ENABLED' => '1' do
+          expect(subject.allowing?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 't' do
+          expect(subject.allowing?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'true' do
+          expect(subject.allowing?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'not true or false' do
+          expect(subject.allowing?).to eq false
+        end
+      end
+    end
+  end
 end
