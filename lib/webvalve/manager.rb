@@ -3,6 +3,10 @@ require 'singleton'
 require 'set'
 
 module WebValve
+  ALWAYS_ENABLED_ENVS = %w(development test).freeze
+  ENABLED_VALUES = %w(1 t true).freeze
+  DISABLED_VALUES = %w(0 f false).freeze
+
   # @api private
   class Manager
     include Singleton
@@ -19,16 +23,29 @@ module WebValve
     end
 
     def setup
-      fake_service_configs.each do |config|
-        if config.should_intercept?
-          webmock_service config
-        else
-          allowlist_service config
+      return if disabled?
+
+      if intercepting?
+        fake_service_configs.each do |config|
+          if WebValve.env.test? || config.explicitly_enabled?
+            allowlist_service config
+          else
+            webmock_service config
+          end
         end
+        WebMock.disable_net_connect! webmock_disable_options
+      end
+
+      if allowing?
+        fake_service_configs.each do |config|
+          if config.explicitly_disabled?
+            webmock_service config
+          end
+        end
+        WebMock.allow_net_connect!
       end
 
       WebMock.enable!
-      WebMock.disable_net_connect! webmock_disable_options
     end
 
     # @api private
@@ -48,6 +65,32 @@ module WebValve
     end
 
     private
+
+    def disabled?
+      !intercepting? && !allowing?
+    end
+
+    def intercepting?
+      in_always_intercepting_env? || ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
+    end
+
+    def allowing?
+      !in_always_intercepting_env? && DISABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
+    end
+
+    def in_always_intercepting_env?
+      if WebValve.env.in?(ALWAYS_ENABLED_ENVS)
+        if ENV.key? 'WEBVALVE_ENABLED'
+          logger.warn(<<~MESSAGE)
+            WARNING: Ignoring WEBVALVE_ENABLED environment variable setting (#{ENV['WEBVALVE_ENABLED']})
+            WebValve is always enabled in development and test environments.
+          MESSAGE
+        end
+        true
+      else
+        false
+      end
+    end
 
     def webmock_disable_options
       { allow_localhost: true }.tap do |opts|

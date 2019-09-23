@@ -7,21 +7,12 @@ module WebValve
       @custom_service_url = url
     end
 
-    def should_intercept?
-      return true if WebValve.env.test? # always intercept in test
+    def explicitly_enabled?
+      value_from_env.present? && WebValve::ENABLED_VALUES.include?(value_from_env.to_s)
+    end
 
-      return false unless WebValve.enabled?
-
-      if WebValve.env.development?
-        # for local development we wanna default to all services disabled
-        # so that we get nice isolated fake-driven development
-        !service_enabled_in_env?(default: false)
-      else
-        # in any production-like environment, default to all services enabled
-        # so that we get integrated behavior by default but we can opt specific
-        # services into fake mode
-        !service_enabled_in_env?(default: true)
-      end
+    def explicitly_disabled?
+      value_from_env.present? && WebValve::DISABLED_VALUES.include?(value_from_env.to_s)
     end
 
     def service_url
@@ -36,6 +27,10 @@ module WebValve
 
     attr_reader :custom_service_url
 
+    def value_from_env
+      ENV["#{service_name.to_s.upcase}_ENABLED"]
+    end
+
     def missing_url_message
       <<~MESSAGE
         There is no URL defined for #{service_class_name}.
@@ -46,11 +41,6 @@ module WebValve
 
     def strip_basic_auth(url)
       url.to_s.sub(%r(\Ahttp(s)?://[^@/]+@), 'http\1://')
-    end
-
-    def service_enabled_in_env?(default:)
-      value = ENV.fetch("#{service_name.to_s.upcase}_ENABLED", default)
-      WebValve::ENABLED_VALUES.include?(value.to_s)
     end
 
     def default_service_url
