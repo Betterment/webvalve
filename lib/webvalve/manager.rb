@@ -34,6 +34,7 @@ module WebValve
           end
         end
         WebMock.disable_net_connect! webmock_disable_options
+        WebMock.enable!
       end
 
       if allowing?
@@ -42,10 +43,11 @@ module WebValve
             webmock_service config
           end
         end
-        WebMock.allow_net_connect!
+        if fake_service_configs.any?(&:explicitly_disabled?)
+          WebMock.allow_net_connect!
+          WebMock.enable!
+        end
       end
-
-      WebMock.enable!
     end
 
     # @api private
