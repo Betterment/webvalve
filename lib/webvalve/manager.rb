@@ -27,7 +27,7 @@ module WebValve
 
       if intercepting?
         fake_service_configs.each do |config|
-          if WebValve.env.test? || config.explicitly_enabled?
+          if !WebValve.env.test? && config.explicitly_enabled?
             allowlist_service config
           else
             webmock_service config
@@ -48,6 +48,16 @@ module WebValve
           WebMock.enable!
         end
       end
+    end
+
+    # @api private
+    def intercepting?
+      in_always_intercepting_env? || ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
+    end
+
+    # @api private
+    def allowing?
+      !in_always_intercepting_env? && DISABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
     end
 
     # @api private

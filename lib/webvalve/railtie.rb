@@ -1,7 +1,7 @@
 module WebValve
   class Railtie < ::Rails::Railtie
     initializer 'webvalve.set_autoload_paths', before: :set_autoload_paths do |app|
-      if WebValve.enabled?
+      unless WebValve.disabled?
         WebValve.config_paths << app.root
 
         WebValve.config_paths.each do |root|
@@ -11,7 +11,7 @@ module WebValve
     end
 
     initializer 'webvalve.setup', after: :load_config_initializers do
-      if WebValve.enabled?
+      unless WebValve.disabled?
         WebValve.config_paths.each do |root|
           path = root.join('config', 'webvalve.rb').to_s
           load path if File.exist?(path)
