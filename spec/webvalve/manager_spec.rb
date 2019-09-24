@@ -455,4 +455,111 @@ RSpec.describe WebValve::Manager do
       end
     end
   end
+
+  describe '.disabled?' do
+    context 'in test env' do
+      around do |ex|
+        with_rails_env 'test' do
+          ex.run
+        end
+      end
+
+      it 'returns false when WEBVALVE_ENABLED is unset' do
+        with_env 'WEBVALVE_ENABLED' => nil do
+          expect(subject.disabled?).to eq false
+        end
+      end
+
+      it 'returns false regardless of WEBVALVE_ENABLED value' do
+        allow(WebValve.logger).to receive(:warn)
+
+        with_env 'WEBVALVE_ENABLED' => '1' do
+          expect(subject.disabled?).to eq false
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+
+        with_env 'WEBVALVE_ENABLED' => '0' do
+          expect(subject.disabled?).to eq false
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+      end
+    end
+
+    context 'in development env' do
+      around do |ex|
+        with_rails_env 'development' do
+          ex.run
+        end
+      end
+
+      it 'returns false when WEBVALVE_ENABLED is unset' do
+        with_env 'WEBVALVE_ENABLED' => nil do
+          expect(subject.disabled?).to eq false
+        end
+      end
+
+      it 'returns false regardless of WEBVALVE_ENABLED value' do
+        allow(WebValve.logger).to receive(:warn)
+
+        with_env 'WEBVALVE_ENABLED' => '1' do
+          expect(subject.disabled?).to eq false
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+
+        with_env 'WEBVALVE_ENABLED' => '0' do
+          expect(subject.disabled?).to eq false
+          expect(WebValve.logger).to have_received(:warn).at_least(1)
+        end
+      end
+    end
+
+    context 'in production enviroment' do
+      around do |ex|
+        with_rails_env 'production' do
+          ex.run
+        end
+      end
+
+      it 'returns true when WEBVALVE_ENABLED is unset' do
+        with_env 'WEBVALVE_ENABLED' => nil do
+          expect(subject.disabled?).to eq true
+        end
+      end
+
+
+      it 'returns false when WEBVALVE_ENABLED is falsey' do
+        with_env 'WEBVALVE_ENABLED' => '0' do
+          expect(subject.disabled?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'f' do
+          expect(subject.disabled?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'false' do
+          expect(subject.disabled?).to eq false
+        end
+      end
+
+      it 'returns false when WEBVALVE_ENABLED is truthy' do
+        with_env 'WEBVALVE_ENABLED' => '1' do
+          expect(subject.disabled?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 't' do
+          expect(subject.disabled?).to eq false
+        end
+
+        with_env 'WEBVALVE_ENABLED' => 'true' do
+          expect(subject.disabled?).to eq false
+        end
+      end
+
+      it 'returns true when WEBVALVE_ENABLED is an invalid value' do
+        with_env 'WEBVALVE_ENABLED' => 'not true or false' do
+          expect(subject.disabled?).to eq true
+        end
+      end
+    end
+  end
 end
