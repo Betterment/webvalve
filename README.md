@@ -31,11 +31,11 @@ gem 'webvalve'
 Then run `bundle install`.
 
 WebValve has 3 modes of operation
-* enabled+intercepting - traffic associated with fakes is routed through
+* intercepting - traffic associated with fakes is routed through
     fakes. all other traffic (except allowed urls) is blocked.
     SOME_SERVICE_ENABLED=1 can be used to disable faking for that
     specific service.
-* enabled+allowing - all traffic is allowed. individual services can be
+* allowing - all traffic is allowed. individual services can be
     routed through fakes by setting SOME_SERVICE_ENABLED=0
 * disabled - traffic is not tampered with.
 
