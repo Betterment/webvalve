@@ -13,7 +13,10 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Changed
 - rework configuration so that WebValve has 3 operating modes: off,
     on+allowing, and on+intercepting. support toggling the latter two
-    modes with `WEBVALVED_ENABLED=1` and `WEBVALVED_ENABLED=0`. (https://github.com/Betterment/webvalve/pull/34)
+    modes with
+    `WEBVALVED_ENABLED=1`+`WEBVALVE_SERVICE_ENABLED_DEFAULT=1` and
+    `WEBVALVED_ENABLED=1`+`WEBVALVE_SERVICE_ENABLED_DEFAULT=0`.
+    (https://github.com/Betterment/webvalve/pull/34)
 
 ## [0.10.0] - 2019-09-23
 ### Changed
