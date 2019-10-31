@@ -30,22 +30,6 @@ gem 'webvalve'
 
 Then run `bundle install`.
 
-WebValve has 3 modes of operation
-* intercepting - traffic associated with fakes is routed through
-    fakes. all other traffic (except allowed urls) is blocked.
-    SOME_SERVICE_ENABLED=1 can be used to disable faking for that
-    specific service.
-* allowing - all traffic is allowed. individual services can be
-    routed through fakes by setting SOME_SERVICE_ENABLED=0
-* disabled - traffic is not tampered with.
-
-* in `test` environments, it's always enabled and intercepting
-* in `development` environments, it's always enabled and intercepting,
-    but services can be toggled on for real
-* in production-like environments, it defaults to disabled, but it can
-    be switched into enabled+intercepting with WEBVALVE_ENABLED=1 or
-    enabled+allowing with WEBVALVE_ENABLED=0
-
 ### Network connections disabled by default
 
 The default mode in development and test is to disallow all HTTP network
