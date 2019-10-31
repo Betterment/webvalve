@@ -12,9 +12,9 @@ module WebValve
     #   @see WebValve::Manager#allow_url
     # @!method reset
     #   @see WebValve::Manager#reset
-    # @!method disabled?
-    #   @see WebValve::Manager#disabled?
-    delegate :setup, :register, :allow_url, :reset, :disabled?, to: :manager
+    # @!method enabled?
+    #   @see WebValve::Manager#enabled?
+    delegate :setup, :register, :allow_url, :reset, :enabled?, to: :manager
     attr_writer :logger
 
     def config_paths

@@ -23,7 +23,7 @@ module WebValve
     end
 
     def setup
-      return if disabled?
+      return unless enabled?
 
       if intercepting?
         fake_service_configs.each do |config|
@@ -51,18 +51,18 @@ module WebValve
     end
 
     # @api private
-    def disabled?
-      !intercepting? && !allowing?
+    def enabled?
+      in_always_intercepting_env? || explicitly_enabled?
     end
 
     # @api private
     def intercepting?
-      in_always_intercepting_env? || ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
+      in_always_intercepting_env? || (explicitly_enabled? && !services_enabled_by_default?)
     end
 
     # @api private
     def allowing?
-      !in_always_intercepting_env? && DISABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
+      !in_always_intercepting_env? && explicitly_enabled? && services_enabled_by_default?
     end
 
     # @api private
@@ -82,6 +82,24 @@ module WebValve
     end
 
     private
+
+    def explicitly_enabled?
+      ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
+    end
+
+    def services_enabled_by_default?
+      if WebValve.env.in?(ALWAYS_ENABLED_ENVS)
+        if ENV.key? 'WEBVALVE_SERVICE_ENABLED_DEFAULT'
+          WebValve.logger.warn(<<~MESSAGE)
+            WARNING: Ignoring WEBVALVE_SERVICE_ENABLED_DEFAULT environment variable setting (#{ENV['WEBVALVE_SERVICE_ENABLED_DEFAULT']})
+            WebValve is always enabled in intercepting mode in development and test environments.
+          MESSAGE
+        end
+        false
+      else
+        ENABLED_VALUES.include?(ENV.fetch('WEBVALVE_SERVICE_ENABLED_DEFAULT', '1'))
+      end
+    end
 
     def in_always_intercepting_env?
       if WebValve.env.in?(ALWAYS_ENABLED_ENVS)
