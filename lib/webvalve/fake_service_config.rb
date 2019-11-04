@@ -7,9 +7,12 @@ module WebValve
       @custom_service_url = url
     end
 
-    def should_intercept?
-      WebValve.env.test? || # always intercept in test
-        (WebValve.enabled? && !service_enabled_in_env?)
+    def explicitly_enabled?
+      value_from_env.present? && WebValve::ENABLED_VALUES.include?(value_from_env.to_s)
+    end
+
+    def explicitly_disabled?
+      value_from_env.present? && WebValve::DISABLED_VALUES.include?(value_from_env.to_s)
     end
 
     def service_url
@@ -24,6 +27,10 @@ module WebValve
 
     attr_reader :custom_service_url
 
+    def value_from_env
+      ENV["#{service_name.to_s.upcase}_ENABLED"]
+    end
+
     def missing_url_message
       <<~MESSAGE
         There is no URL defined for #{service_class_name}.
@@ -34,10 +41,6 @@ module WebValve
 
     def strip_basic_auth(url)
       url.to_s.sub(%r(\Ahttp(s)?://[^@/]+@), 'http\1://')
-    end
-
-    def service_enabled_in_env?
-      WebValve::ENABLED_VALUES.include?(ENV["#{service_name.to_s.upcase}_ENABLED"])
     end
 
     def default_service_url

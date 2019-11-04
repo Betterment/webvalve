@@ -3,9 +3,6 @@ require 'active_support'
 require 'active_support/core_ext'
 
 module WebValve
-  ALWAYS_ENABLED_ENVS = %w(development test).freeze
-  ENABLED_VALUES = %w(1 t true).freeze
-
   class << self
     # @!method setup
     #   @see WebValve::Manager#setup
@@ -15,22 +12,10 @@ module WebValve
     #   @see WebValve::Manager#allow_url
     # @!method reset
     #   @see WebValve::Manager#reset
-    delegate :setup, :register, :allow_url, :reset, to: :manager
+    # @!method enabled?
+    #   @see WebValve::Manager#enabled?
+    delegate :setup, :register, :allow_url, :reset, :enabled?, to: :manager
     attr_writer :logger
-
-    def enabled?
-      if env.in?(ALWAYS_ENABLED_ENVS)
-        if ENV.key? 'WEBVALVE_ENABLED'
-          logger.warn(<<~MESSAGE)
-            WARNING: Ignoring WEBVALVE_ENABLED environment variable setting (#{ENV['WEBVALVE_ENABLED']})
-            WebValve is always enabled in development and test environments.
-          MESSAGE
-        end
-        true
-      else
-        ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
-      end
-    end
 
     def config_paths
       @config_paths ||= Set.new

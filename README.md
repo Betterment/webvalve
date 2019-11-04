@@ -227,12 +227,22 @@ not registered.
 
 ## Frequently Asked Questions
 
-> Can I use WebValve in environments like staging and demo?
+> Can I use WebValve in environments like staging, demo, and production?
 
 Yes! By default WebValve is only enabled in test and development
 environments; however, it can be enabled in other environments by
-setting `WEBVALVE_ENABLED=true`. This can be useful for spinning up
-cheap, one-off environments for user-testing or demos.
+setting `WEBVALVE_ENABLED=true` (actually, any of 1/t/true will work).
+This can be useful for spinning up cheap, one-off environments for
+user-testing or demos. When WebValve is enabled in any environment other
+than development/test it will default services to enabled rather than
+disabled, allowing all traffic to pass-thru. This ensures that
+production-like environments are run integrated by default. You can
+change this behavior by setting `WEBVALVE_SERVICE_ENABLED_DEFAULT=false`
+(any of 0/f/false will work). This will default to the same experience
+as local development, defaulting services to disabled, intercepting all
+traffic. In either of these modes, you can use the
+`$SERVICE_ENABLED=true/false` to toggle a specific service into the
+desired state.
 
 > Can I use WebValve without Rails?
 

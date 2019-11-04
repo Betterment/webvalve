@@ -19,114 +19,50 @@ RSpec.describe WebValve::FakeServiceConfig do
 
   subject { described_class.new service_class_name: fake_service.name }
 
-  describe '.should_intercept?' do
-    context 'in test env' do
-      around do |ex|
-        with_rails_env 'test' do
-          ex.run
-        end
-      end
-
-      it 'returns true when DUMMY_ENABLED is unset' do
-        expect(subject.should_intercept?).to eq true
-      end
-
-      it 'returns true regardless of DUMMY_ENABLED value' do
-        with_env 'DUMMY_ENABLED' => '1' do
-          expect(subject.should_intercept?).to eq true
-        end
-
-        with_env 'DUMMY_ENABLED' => '0' do
-          expect(subject.should_intercept?).to eq true
-        end
-      end
+  describe '.explicitly_enabled?' do
+    it 'returns false when DUMMY_ENABLED is unset' do
+      expect(subject.explicitly_enabled?).to eq false
     end
 
-    context 'in development env' do
-      around do |ex|
-        with_rails_env 'development' do
-          ex.run
-        end
+    it 'returns true when DUMMY_ENABLED is truthy' do
+      with_env 'DUMMY_ENABLED' => '1' do
+        expect(subject.explicitly_enabled?).to eq true
       end
 
-      it 'returns true when DUMMY_ENABLED is unset' do
-        expect(subject.should_intercept?).to eq true
+      with_env 'DUMMY_ENABLED' => 't' do
+        expect(subject.explicitly_enabled?).to eq true
       end
 
-      it 'returns false when DUMMY_ENABLED is truthy' do
-        with_env 'DUMMY_ENABLED' => '1' do
-          expect(subject.should_intercept?).to eq false
-        end
-
-        with_env 'DUMMY_ENABLED' => 't' do
-          expect(subject.should_intercept?).to eq false
-        end
-
-        with_env 'DUMMY_ENABLED' => 'true' do
-          expect(subject.should_intercept?).to eq false
-        end
+      with_env 'DUMMY_ENABLED' => 'true' do
+        expect(subject.explicitly_enabled?).to eq true
       end
 
-      it 'returns true when DUMMY_ENABLED is not truthy' do
-        with_env 'DUMMY_ENABLED' => '0' do
-          expect(subject.should_intercept?).to eq true
-        end
-
-        with_env 'DUMMY_ENABLED' => 'f' do
-          expect(subject.should_intercept?).to eq true
-        end
-
-        with_env 'DUMMY_ENABLED' => 'false' do
-          expect(subject.should_intercept?).to eq true
-        end
-
-        with_env 'DUMMY_ENABLED' => 'not true or false' do
-          expect(subject.should_intercept?).to eq true
-        end
+      with_env 'DUMMY_ENABLED' => 'not true or false' do
+        expect(subject.explicitly_enabled?).to eq false
       end
     end
+  end
 
-    context 'in production enviroment' do
-      around do |ex|
-        with_rails_env 'production' do
-          ex.run
-        end
+  describe '.explicitly_disabled?' do
+    it 'returns false when DUMMY_ENABLED is unset' do
+      expect(subject.explicitly_disabled?).to eq false
+    end
+
+    it 'returns true when DUMMY_ENABLED is falsey' do
+      with_env 'DUMMY_ENABLED' => '0' do
+        expect(subject.explicitly_disabled?).to eq true
       end
 
-      it 'returns false' do
-        expect(subject.should_intercept?).to eq false
+      with_env 'DUMMY_ENABLED' => 'f' do
+        expect(subject.explicitly_disabled?).to eq true
       end
 
-      it 'returns false regardless of DUMMY_ENABLED value' do
-        with_env 'DUMMY_ENABLED' => '1' do
-          expect(subject.should_intercept?).to eq false
-        end
-
-        with_env 'DUMMY_ENABLED' => '0' do
-          expect(subject.should_intercept?).to eq false
-        end
+      with_env 'DUMMY_ENABLED' => 'false' do
+        expect(subject.explicitly_disabled?).to eq true
       end
 
-      context 'when WEBVALVE_ENABLED is true' do
-        around do |ex|
-          with_env 'WEBVALVE_ENABLED' => '1' do
-            ex.run
-          end
-        end
-
-        it 'returns true' do
-          expect(subject.should_intercept?).to eq true
-        end
-
-        it 'respects DUMMY_ENABLED flag' do
-          with_env 'DUMMY_ENABLED' => '1' do
-            expect(subject.should_intercept?).to eq false
-          end
-
-          with_env 'DUMMY_ENABLED' => '0' do
-            expect(subject.should_intercept?).to eq true
-          end
-        end
+      with_env 'DUMMY_ENABLED' => 'not true or false' do
+        expect(subject.explicitly_disabled?).to eq false
       end
     end
   end

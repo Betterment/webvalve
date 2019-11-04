@@ -3,6 +3,10 @@ require 'singleton'
 require 'set'
 
 module WebValve
+  ALWAYS_ENABLED_ENVS = %w(development test).freeze
+  ENABLED_VALUES = %w(1 t true).freeze
+  DISABLED_VALUES = %w(0 f false).freeze
+
   # @api private
   class Manager
     include Singleton
@@ -19,16 +23,46 @@ module WebValve
     end
 
     def setup
-      fake_service_configs.each do |config|
-        if config.should_intercept?
-          webmock_service config
-        else
-          allowlist_service config
+      return unless enabled?
+
+      if intercepting?
+        fake_service_configs.each do |config|
+          if !WebValve.env.test? && config.explicitly_enabled?
+            allowlist_service config
+          else
+            webmock_service config
+          end
         end
+        WebMock.disable_net_connect! webmock_disable_options
+        WebMock.enable!
       end
 
-      WebMock.enable!
-      WebMock.disable_net_connect! webmock_disable_options
+      if allowing?
+        fake_service_configs.each do |config|
+          if config.explicitly_disabled?
+            webmock_service config
+          end
+        end
+        if fake_service_configs.any?(&:explicitly_disabled?)
+          WebMock.allow_net_connect!
+          WebMock.enable!
+        end
+      end
+    end
+
+    # @api private
+    def enabled?
+      in_always_intercepting_env? || explicitly_enabled?
+    end
+
+    # @api private
+    def intercepting?
+      in_always_intercepting_env? || (explicitly_enabled? && !services_enabled_by_default?)
+    end
+
+    # @api private
+    def allowing?
+      !in_always_intercepting_env? && explicitly_enabled? && services_enabled_by_default?
     end
 
     # @api private
@@ -48,6 +82,38 @@ module WebValve
     end
 
     private
+
+    def explicitly_enabled?
+      ENABLED_VALUES.include?(ENV['WEBVALVE_ENABLED'])
+    end
+
+    def services_enabled_by_default?
+      if WebValve.env.in?(ALWAYS_ENABLED_ENVS)
+        if ENV.key? 'WEBVALVE_SERVICE_ENABLED_DEFAULT'
+          WebValve.logger.warn(<<~MESSAGE)
+            WARNING: Ignoring WEBVALVE_SERVICE_ENABLED_DEFAULT environment variable setting (#{ENV['WEBVALVE_SERVICE_ENABLED_DEFAULT']})
+            WebValve is always enabled in intercepting mode in development and test environments.
+          MESSAGE
+        end
+        false
+      else
+        ENABLED_VALUES.include?(ENV.fetch('WEBVALVE_SERVICE_ENABLED_DEFAULT', '1'))
+      end
+    end
+
+    def in_always_intercepting_env?
+      if WebValve.env.in?(ALWAYS_ENABLED_ENVS)
+        if ENV.key? 'WEBVALVE_ENABLED'
+          WebValve.logger.warn(<<~MESSAGE)
+            WARNING: Ignoring WEBVALVE_ENABLED environment variable setting (#{ENV['WEBVALVE_ENABLED']})
+            WebValve is always enabled in development and test environments.
+          MESSAGE
+        end
+        true
+      else
+        false
+      end
+    end
 
     def webmock_disable_options
       { allow_localhost: true }.tap do |opts|
