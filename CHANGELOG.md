@@ -9,7 +9,12 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
-## [0.11.0] - 2019-09-23
+## [0.12.0] - 2020-02-22
+### Changed
+- raise an error on setup when multiple services are registered to the
+    same url. (https://github.com/Betterment/webvalve/pull/40)
+
+## [0.11.0] - 2019-11-04
 ### Changed
 - rework configuration so that WebValve has 3 operating modes: off,
     on+allowing, and on+intercepting. support toggling the latter two
@@ -47,7 +52,9 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Changed
 - WebMock 3+ support from @messanjah (https://github.com/Betterment/webvalve/pull/22)
 
-[Unreleased]: https://github.com/Betterment/webvalve/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/Betterment/webvalve/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/Betterment/webvalve/compare/v0.11.0...v0.12.0
+[0.11.0]: https://github.com/Betterment/webvalve/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/Betterment/webvalve/compare/v0.9.10...v0.10.0
 [0.9.10]: https://github.com/Betterment/webvalve/compare/v0.9.9...v0.9.10
 [0.9.9]: https://github.com/Betterment/webvalve/compare/v0.9.8...v0.9.9
