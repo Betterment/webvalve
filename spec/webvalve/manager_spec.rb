@@ -129,6 +129,18 @@ RSpec.describe WebValve::Manager do
 
         expect(subject.allowlisted_urls).to include 'http://something.dev'
       end
+
+      it 'raises with duplicate stubbed urls' do
+        disabled_service = class_double(WebValve::FakeService, name: 'FakeSomething')
+        other_disabled_service = class_double(WebValve::FakeService, name: 'FakeOtherThing')
+
+        with_env 'SOMETHING_API_URL' => 'http://something.dev', 'OTHER_THING_API_URL' => 'http://something.dev' do
+          subject.register disabled_service.name
+          subject.register other_disabled_service.name
+
+          expect { subject.setup }.to raise_error('Invalid config for FakeOtherThing. Already stubbed url http://something.dev')
+        end
+      end
     end
 
     context 'when WebValve is on and allowing traffic' do

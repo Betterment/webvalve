@@ -69,6 +69,7 @@ module WebValve
     def reset
       allowlisted_urls.clear
       fake_service_configs.clear
+      stubbed_urls.clear
     end
 
     # @api private
@@ -126,6 +127,8 @@ module WebValve
     end
 
     def webmock_service(config)
+      ensure_non_duplicate_stub(config)
+
       WebMock.stub_request(
         :any,
         url_to_regexp(config.service_url)
@@ -138,6 +141,15 @@ module WebValve
 
     def url_to_regexp(url)
       %r(\A#{Regexp.escape url})
+    end
+
+    def ensure_non_duplicate_stub(config)
+      raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.service_url}" if stubbed_urls.include?(config.service_url)
+      stubbed_urls << config.service_url
+    end
+
+    def stubbed_urls
+      @stubbed_urls ||= Set.new
     end
   end
 end
