@@ -70,6 +70,7 @@ module WebValve
       allowlisted_urls.clear
       fake_service_configs.clear
       stubbed_urls.clear
+      WebMock.reset!
     end
 
     # @api private
