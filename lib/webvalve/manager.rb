@@ -132,7 +132,7 @@ module WebValve
       WebMock.stub_request(
         :any,
         url_to_regexp(config.service_url)
-      ).to_rack(FakeServiceWrapper.new(config.service_class_name))
+      ).to_rack(FakeServiceWrapper.new(config))
     end
 
     def allowlist_service(config)
