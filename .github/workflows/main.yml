@@ -1,0 +1,35 @@
+name: Main
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        ruby:
+          - '2.5'
+          - '2.6'
+        gemfile:
+          - gemfiles/rails_5_0.gemfile
+          - gemfiles/rails_5_1.gemfile
+          - gemfiles/rails_5_2.gemfile
+          - gemfiles/rails_6_0.gemfile
+          - gemfiles/ruby.gemfile
+    name: Ruby ${{ matrix.ruby }}, ${{ matrix.gemfile }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - name: Build and test with Rake
+        env:
+          BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rake
