@@ -7,7 +7,7 @@ end
 Bundler::GemHelper.install_tasks
 
 task(:default).clear
-if ENV['APPRAISAL_INITIALIZED'] || ENV['TRAVIS']
+if ENV['APPRAISAL_INITIALIZED'] || ENV['CI']
   require 'rspec/core'
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new(:spec)
