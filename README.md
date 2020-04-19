@@ -1,7 +1,7 @@
 WebValve
 ========
 
-![Build Status](https://github.com/Betterment/webvalve/workflows/Main/badge.svg)
+![Build Status](https://github.com/Betterment/webvalve/workflows/CI/badge.svg)
 [![Gem Status](https://img.shields.io/gem/v/webvalve.svg)](https://rubygems.org/gems/webvalve)
 
 WebValve is a tool for defining and registering fake implementations of
