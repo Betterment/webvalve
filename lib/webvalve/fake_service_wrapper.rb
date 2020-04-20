@@ -6,7 +6,7 @@ module WebValve
     end
 
     def call(env)
-      env['PATH_INFO'] = env['PATH_INFO'].gsub(/^#{path_prefix}/, '')
+      env['PATH_INFO'] = env['PATH_INFO'].gsub(/\A#{path_prefix}/, '')
       app.call(env)
     end
 
