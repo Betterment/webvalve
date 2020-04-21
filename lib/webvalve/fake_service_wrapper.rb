@@ -6,7 +6,7 @@ module WebValve
     end
 
     def call(env)
-      env['PATH_INFO'] = env['PATH_INFO'].gsub(/\A#{path_prefix}/, '')
+      env['PATH_INFO'] = env['PATH_INFO'].gsub(/\A#{@service_config.path_prefix}/, '')
       app.call(env)
     end
 
@@ -14,10 +14,6 @@ module WebValve
 
     def app
       @service_config.service_class_name.constantize
-    end
-
-    def path_prefix
-      @path_prefix ||= URI::parse(@service_config.service_url).path
     end
   end
 end

@@ -88,4 +88,28 @@ RSpec.describe WebValve::FakeServiceConfig do
       end
     end
   end
+
+  describe '.path_prefix' do
+    it 'raises if the url is not present' do
+      expect { subject.path_prefix }.to raise_error(/There is no URL defined for FakeDummy/)
+    end
+
+    it 'returns root when there is no path in the service URL' do
+      with_env 'DUMMY_API_URL' => 'http://bananas.test/' do
+        expect(subject.path_prefix).to eq '/'
+      end
+      with_env 'DUMMY_API_URL' => 'https://some:auth@bananas.test//' do
+        expect(subject.path_prefix).to eq '/' # Parses funkier URL
+      end
+    end
+
+    it 'returns the path when there is one in the service URL' do
+      with_env 'DUMMY_API_URL' => 'http://zombo.com/welcome' do
+        expect(subject.path_prefix).to eq '/welcome'
+      end
+      with_env 'DUMMY_API_URL' => 'http://zombo.com/welcome/' do
+        expect(subject.path_prefix).to eq '/welcome' # Ignores trailing '/'
+      end
+    end
+  end
 end
