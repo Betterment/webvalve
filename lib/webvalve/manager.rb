@@ -70,6 +70,7 @@ module WebValve
       allowlisted_urls.clear
       fake_service_configs.clear
       stubbed_urls.clear
+      WebMock.reset!
     end
 
     # @api private
@@ -132,7 +133,7 @@ module WebValve
       WebMock.stub_request(
         :any,
         url_to_regexp(config.service_url)
-      ).to_rack(FakeServiceWrapper.new(config.service_class_name))
+      ).to_rack(FakeServiceWrapper.new(config))
     end
 
     def allowlist_service(config)

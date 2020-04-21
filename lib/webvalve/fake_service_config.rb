@@ -23,6 +23,10 @@ module WebValve
       end
     end
 
+    def path_prefix
+      @path_prefix ||= URI::parse(service_url).path
+    end
+
     private
 
     attr_reader :custom_service_url
