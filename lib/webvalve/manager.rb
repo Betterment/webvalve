@@ -23,8 +23,8 @@ module WebValve
     end
 
     def setup
-      load_configs!
       return unless enabled?
+      load_configs!
 
       if intercepting?
         fake_service_configs.each do |config|
