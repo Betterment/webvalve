@@ -23,7 +23,7 @@ RSpec.describe WebValve::FakeService do
 
   describe 'integrated behavior' do
     after do
-      WebValve.reset
+      WebValve.reset!
     end
 
     context 'when the service is at a root path' do
