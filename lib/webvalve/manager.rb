@@ -24,6 +24,7 @@ module WebValve
 
     def setup
       return unless enabled?
+      load_configs!
 
       if intercepting?
         fake_service_configs.each do |config|
@@ -147,6 +148,13 @@ module WebValve
     def ensure_non_duplicate_stub(config)
       raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.service_url}" if stubbed_urls.include?(config.service_url)
       stubbed_urls << config.service_url
+    end
+
+    def load_configs!
+      WebValve.config_paths.each do |root|
+        path = root.join('config', 'webvalve.rb').to_s
+        load path if File.exist?(path)
+      end
     end
 
     def stubbed_urls
