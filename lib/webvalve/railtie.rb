@@ -12,11 +12,6 @@ module WebValve
 
     initializer 'webvalve.setup', after: :load_config_initializers do
       if WebValve.enabled?
-        WebValve.config_paths.each do |root|
-          path = root.join('config', 'webvalve.rb').to_s
-          load path if File.exist?(path)
-        end
-
         config.after_initialize do
           WebValve.setup
         end
