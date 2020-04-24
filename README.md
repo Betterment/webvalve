@@ -170,6 +170,7 @@ RSpec.configure do |config|
   end
   
   config.around :each do |ex|
+    WebValve.reset
     WebValve.setup
     ex.run
   end
