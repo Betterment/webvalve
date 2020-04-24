@@ -9,6 +9,12 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
+## [1.0.1] - 2020-04-24
+### Changed
+- Fix an issue in rspec setup / usage of `WebValve.reset`
+    (https://github.com/Betterment/webvalve/pull/43)
+
+
 ## [1.0.0] - 2020-04-22
 ### Changed
 - Support API_URLs that include path
@@ -57,7 +63,8 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Changed
 - WebMock 3+ support from @messanjah (https://github.com/Betterment/webvalve/pull/22)
 
-[Unreleased]: https://github.com/Betterment/webvalve/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Betterment/webvalve/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/Betterment/webvalve/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Betterment/webvalve/compare/v0.12.0...v1.0.0
 [0.12.0]: https://github.com/Betterment/webvalve/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/Betterment/webvalve/compare/v0.10.0...v0.11.0
