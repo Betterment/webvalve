@@ -153,8 +153,7 @@ RSpec.describe WebValve::Manager do
           subject.register other_disabled_service.name
 
           expect { subject.setup }.to_not raise_error
-          expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://user1@something\.dev})
-          expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://user2@something\.dev})
+          expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://something\.dev}).twice
         end
       end
     end

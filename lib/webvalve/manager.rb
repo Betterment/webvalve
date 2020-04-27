@@ -146,8 +146,8 @@ module WebValve
     end
 
     def ensure_non_duplicate_stub(config)
-      raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.service_url}" if stubbed_urls.include?(config.service_url)
-      stubbed_urls << config.service_url
+      raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.full_url}" if stubbed_urls.include?(config.full_url)
+      stubbed_urls << config.full_url
     end
 
     def load_configs!

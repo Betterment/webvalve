@@ -15,11 +15,14 @@ module WebValve
       value_from_env.present? && WebValve::DISABLED_VALUES.include?(value_from_env.to_s)
     end
 
+    def full_url
+      @full_url ||= custom_service_url || default_service_url
+    end
+
     def service_url
       @service_url ||= begin
-        url = custom_service_url || default_service_url
-        raise missing_url_message if url.blank?
-        strip_basic_auth url
+        raise missing_url_message if full_url.blank?
+        strip_basic_auth full_url
       end
     end
 
