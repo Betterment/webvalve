@@ -9,6 +9,11 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
+## [1.0.2] - 2020-04-27
+### Changed
+- Fix an issue with setup / reset
+    (https://github.com/Betterment/webvalve/pull/44)
+
 ## [1.0.1] - 2020-04-24
 ### Changed
 - Fix an issue in rspec setup / usage of `WebValve.reset`
@@ -63,7 +68,8 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Changed
 - WebMock 3+ support from @messanjah (https://github.com/Betterment/webvalve/pull/22)
 
-[Unreleased]: https://github.com/Betterment/webvalve/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/Betterment/webvalve/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/Betterment/webvalve/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/Betterment/webvalve/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Betterment/webvalve/compare/v0.12.0...v1.0.0
 [0.12.0]: https://github.com/Betterment/webvalve/compare/v0.11.0...v0.12.0
