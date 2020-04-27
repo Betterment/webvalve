@@ -10,11 +10,13 @@ module WebValve
     #   @see WebValve::Manager#register
     # @!method allow_url
     #   @see WebValve::Manager#allow_url
-    # @!method reset
-    #   @see WebValve::Manager#reset
+    # @!method reset!
+    #   @see WebValve::Manager#reset!
+    # @!method clear!
+    #   @see WebValve::Manager#clear!
     # @!method enabled?
     #   @see WebValve::Manager#enabled?
-    delegate :setup, :register, :allow_url, :reset, :enabled?, to: :manager
+    delegate :setup, :register, :allow_url, :reset!, :clear!, :enabled?, to: :manager
     attr_writer :logger
 
     def config_paths
@@ -51,6 +53,15 @@ module WebValve
 
     def manager
       WebValve::Manager.instance
+    end
+
+    def reset
+      ActiveSupport::Deprecation.warn <<~WARN.squish
+        `WebValve.reset` is deprecated.
+        Please use `WebValve.clear!` (the old 'reset' behavior)
+        or `WebValve.reset!` (which also runs 'setup')
+      WARN
+      clear!
     end
   end
 end

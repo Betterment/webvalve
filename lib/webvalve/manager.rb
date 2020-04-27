@@ -67,7 +67,13 @@ module WebValve
     end
 
     # @api private
-    def reset
+    def reset!
+      clear!
+      setup
+    end
+
+    # @api private
+    def clear!
       allowlisted_urls.clear
       fake_service_configs.clear
       stubbed_urls.clear
