@@ -141,6 +141,22 @@ RSpec.describe WebValve::Manager do
           expect { subject.setup }.to raise_error('Invalid config for FakeOtherThing. Already stubbed url http://something.dev')
         end
       end
+
+      it 'does not raise with different HTTP auth patterns' do
+        disabled_service = class_double(WebValve::FakeService, name: 'FakeSomething')
+        other_disabled_service = class_double(WebValve::FakeService, name: 'FakeOtherThing')
+        web_mock_stubble = double(to_rack: true)
+        allow(WebMock).to receive(:stub_request).and_return(web_mock_stubble)
+
+        with_env 'SOMETHING_API_URL' => 'http://user1@something.dev', 'OTHER_THING_API_URL' => 'http://user2@something.dev' do
+          subject.register disabled_service.name
+          subject.register other_disabled_service.name
+
+          expect { subject.setup }.to_not raise_error
+          expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://user1@something\.dev})
+          expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://user2@something\.dev})
+        end
+      end
     end
 
     context 'when WebValve is on and allowing traffic' do
