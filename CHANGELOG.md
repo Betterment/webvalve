@@ -9,6 +9,14 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
+## [1.1.0] - 2020-04-27
+### Changed
+- Allow the same URL for services as long as basic auth is different
+    (https://github.com/Betterment/webvalve/pull/46)
+- Introduce `reset!` and `clear!` to replace `reset`
+    https://github.com/Betterment/webvalve/pull/45)
+
+
 ## [1.0.2] - 2020-04-27
 ### Changed
 - Fix an issue with setup / reset
@@ -68,7 +76,8 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Changed
 - WebMock 3+ support from @messanjah (https://github.com/Betterment/webvalve/pull/22)
 
-[Unreleased]: https://github.com/Betterment/webvalve/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/Betterment/webvalve/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/Betterment/webvalve/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/Betterment/webvalve/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/Betterment/webvalve/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Betterment/webvalve/compare/v0.12.0...v1.0.0
