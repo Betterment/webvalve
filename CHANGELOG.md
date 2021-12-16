@@ -9,13 +9,20 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
+## [1.2.0] - 2021-12-16
+### Added
+- Official support for Ruby 2.7 and 3.0
+- Official support for Rails 6.2 and 7.0
+### Removed
+- Drops support for Rails < 5.2
+- Drops support for Ruby < 2.6
+
 ## [1.1.0] - 2020-04-27
 ### Changed
 - Allow the same URL for services as long as basic auth is different
     (https://github.com/Betterment/webvalve/pull/46)
 - Introduce `reset!` and `clear!` to replace `reset`
     https://github.com/Betterment/webvalve/pull/45)
-
 
 ## [1.0.2] - 2020-04-27
 ### Changed
@@ -26,7 +33,6 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Changed
 - Fix an issue in rspec setup / usage of `WebValve.reset`
     (https://github.com/Betterment/webvalve/pull/43)
-
 
 ## [1.0.0] - 2020-04-22
 ### Changed
@@ -76,7 +82,8 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Changed
 - WebMock 3+ support from @messanjah (https://github.com/Betterment/webvalve/pull/22)
 
-[Unreleased]: https://github.com/Betterment/webvalve/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/Betterment/webvalve/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/Betterment/webvalve/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Betterment/webvalve/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/Betterment/webvalve/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/Betterment/webvalve/compare/v1.0.0...v1.0.1
