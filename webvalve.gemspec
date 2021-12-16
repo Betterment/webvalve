@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec"
   s.add_development_dependency "pry"
   s.add_development_dependency "yard"
+  s.add_development_dependency "rails"
 
   s.required_ruby_version = ">= 2.6.0"
 end
