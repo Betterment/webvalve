@@ -12,13 +12,14 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '2.5'
           - '2.6'
+          - '2.7'
+          - '3.0'
         gemfile:
-          - gemfiles/rails_5_0.gemfile
-          - gemfiles/rails_5_1.gemfile
           - gemfiles/rails_5_2.gemfile
           - gemfiles/rails_6_0.gemfile
+          - gemfiles/rails_6_1.gemfile
+          - gemfiles/rails_7_0.gemfile
           - gemfiles/ruby.gemfile
     name: Ruby ${{ matrix.ruby }}, ${{ matrix.gemfile }}
     steps:
