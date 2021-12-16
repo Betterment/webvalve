@@ -11,11 +11,14 @@ Gem::Specification.new do |s|
   s.summary     = "A library for faking http service integrations in development and test"
   s.description = "Betterment's library for developing and testing service-oriented apps in isolation with WebMock and Sinatra-based fakes."
   s.license     = "MIT"
+  s.metadata = {
+    "rubygems_mfa_required" => "true",
+  }
 
   s.files = Dir["{lib}/**/*", "LICENSE", "Rakefile", "README.md", "CHANGELOG.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "activesupport", ">= 4.2"
+  s.add_dependency "activesupport", ">= 5.2.0"
   s.add_dependency "sinatra", ">= 1.4", "< 3"
   s.add_dependency "sinatra-contrib", ">= 1.4", "< 3"
   s.add_dependency "webmock", ">= 2.0"
@@ -24,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec"
   s.add_development_dependency "pry"
   s.add_development_dependency "yard"
+  s.add_development_dependency "rails"
 
-  s.required_ruby_version = ">= 2"
+  s.required_ruby_version = ">= 2.6.0"
 end

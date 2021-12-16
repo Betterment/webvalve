@@ -8,26 +8,33 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         ruby:
-          - '2.5'
-          - '2.6'
+          - 2.6
+          - 2.7
+          - 3.0
         gemfile:
-          - gemfiles/rails_5_0.gemfile
-          - gemfiles/rails_5_1.gemfile
           - gemfiles/rails_5_2.gemfile
           - gemfiles/rails_6_0.gemfile
+          - gemfiles/rails_6_1.gemfile
+          - gemfiles/rails_7_0.gemfile
           - gemfiles/ruby.gemfile
+        exclude:
+          - ruby: 3.0
+            gemfile: gemfiles/rails_5_2.gemfile
+          - ruby: 2.6
+            gemfile: gemfiles/rails_7_0.gemfile
     name: Ruby ${{ matrix.ruby }}, ${{ matrix.gemfile }}
     steps:
       - uses: technote-space/auto-cancel-redundant-job@v1
         if: github.event_name == 'pull_request'
       - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
       - name: Build and test with Rake
         env:
           BUNDLE_GEMFILE: ${{ matrix.gemfile }}
