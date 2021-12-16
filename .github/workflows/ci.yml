@@ -34,6 +34,7 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
       - name: Build and test with Rake
         env:
           BUNDLE_GEMFILE: ${{ matrix.gemfile }}
