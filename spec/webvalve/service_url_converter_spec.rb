@@ -112,6 +112,10 @@ RSpec.describe WebValve::ServiceUrlConverter do
       it "doesn't match when malformed" do
         expect("http://bilbobaggins@bar.com").not_to match(subject.regexp)
       end
+
+      it "doesn't match when missing password part" do
+        expect("http://bilbo@bar.com").not_to match(subject.regexp)
+      end
     end
 
     context "with a wildcarded path" do
