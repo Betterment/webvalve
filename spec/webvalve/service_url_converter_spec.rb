@@ -97,8 +97,8 @@ RSpec.describe WebValve::ServiceUrlConverter do
         expect("http://foobaz.bar.com").to match(subject.regexp)
       end
 
-      it "doesn't match when empty" do
-        expect("http://.bar.com").not_to match(subject.regexp)
+      it "matches when empty" do
+        expect("http://baz.bar.com").to match(subject.regexp)
       end
     end
 
