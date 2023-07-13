@@ -18,6 +18,18 @@ RSpec.describe WebValve::ServiceUrlConverter do
       end
     end
 
+    context "with multiple asterisks" do
+      let(:url) { "http://bar.com/**/bump" }
+
+      it "matches like a single asterisk" do
+        expect("http://bar.com/foo/bump").to match(subject.regexp)
+      end
+
+      it "doesn't match like a filesystem glob" do
+        expect("http://bar.com/foo/bar/bump").not_to match(subject.regexp)
+      end
+    end
+
     context "with a trailing *" do
       let(:url) { "http://bar.com/*" }
 
