@@ -10,6 +10,15 @@ RSpec.describe WebValve::ServiceUrlConverter do
       expect(subject.regexp).to be_a(Regexp)
     end
 
+    context "with a boundary char on the end" do
+      let(:url) { "http://bar.com/" }
+
+      it "matches arbitrary suffixes" do
+        expect("http://bar.com/baz/bump/beep").to match(subject.regexp)
+      end
+
+    end
+
     context "with a trailing *" do
       let(:url) { "http://bar.com/*" }
 
