@@ -218,6 +218,28 @@ WebValve.register FakeBank, url: ENV.fetch("SOME_CUSTOM_API_URL")
 WebValve.register FakeBank, url: "https://some-service.com"
 ```
 
+## Mocking dynamic URLs with wildcards
+
+If the service you are interacting with contains dynamic elements, e.g.
+an instance-specific subdomain, you can specify a wildcard in your url
+with the `*` character to match a series of zero or more
+non-URL-delimeter characters (URL delimiter characters are defined as
+`.`, `:`, `/`, `?`, `#`, `@`, `&`, and `=`). For example:
+
+```bash
+export BANK_API_URL=https://*.mybank.com/
+```
+
+or
+
+```ruby
+WebValve.register FakeBank, url: "https://*.mybank.com"
+```
+
+Note: unlike filesystem globbing, `?` isn't respected to mean "exactly
+one character" because it's a URL delimiter character. Only `*` works
+for WebValve URL wildcards.
+
 ## What's in a `FakeService`?
 
 The definition of `FakeService` is really simple. It's just a
