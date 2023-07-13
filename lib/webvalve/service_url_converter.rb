@@ -1,8 +1,7 @@
 module WebValve
   class ServiceUrlConverter
     WILDCARD_BOUNDARY_CHARS = ('\b' + Regexp.escape('.:/?#@&=')).freeze
-    WILDCARD_CHARACTER_CLASS =  ('[^' + WILDCARD_BOUNDARY_CHARS + ']').freeze
-    WILDCARD_SUBSTITUTION = (WILDCARD_CHARACTER_CLASS + '*').freeze
+    WILDCARD_SUBSTITUTION = ('[^' + WILDCARD_BOUNDARY_CHARS + ']*').freeze
     URL_PREFIX_BOUNDARY = ('[' + WILDCARD_BOUNDARY_CHARS + ']').freeze
     URL_SUFFIX_PATTERN = ('(' + URL_PREFIX_BOUNDARY + '.*)?\z').freeze
 
