@@ -133,7 +133,7 @@ RSpec.describe WebValve::ServiceUrlConverter do
     context "with a wildcarded query param" do
       let(:url) { "http://bar.com/whatever?foo=*&bar=bump" }
 
-      it "matches with arbitrarily spicy but legal, non-URL-significant characters" do
+      it "matches when present" do
         expect("http://bar.com/whatever?foo=baz&bar=bump").to match(subject.regexp)
       end
 
