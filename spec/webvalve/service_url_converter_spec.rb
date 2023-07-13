@@ -16,7 +16,6 @@ RSpec.describe WebValve::ServiceUrlConverter do
       it "matches arbitrary suffixes" do
         expect("http://bar.com/baz/bump/beep").to match(subject.regexp)
       end
-
     end
 
     context "with a trailing *" do
