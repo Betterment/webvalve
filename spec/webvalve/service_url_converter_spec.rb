@@ -40,6 +40,10 @@ RSpec.describe WebValve::ServiceUrlConverter do
       it "matches anything else" do
         expect("gopher://bar.com/").to match(subject.regexp)
       end
+
+      it "matches empty" do
+        expect("://bar.com").to match(subject.regexp)
+      end
     end
 
     context "with a wildcarded partial protocol" do
