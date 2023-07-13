@@ -10,6 +10,22 @@ RSpec.describe WebValve::ServiceUrlConverter do
       expect(subject.regexp).to be_a(Regexp)
     end
 
+    context "with an empty url" do
+      let(:url) { "" }
+
+      it "matches empty string" do
+        expect("").to match(subject.regexp)
+      end
+
+      it "matches a string starting with a URL delimiter because the rest is just interpreted as suffix" do
+        expect(":do:do:dodo:do:do").to match(subject.regexp)
+      end
+
+      it "doesn't match a string that doesn't start with a delimiter" do
+        expect("jamietart:do:do:dodo:do:do").not_to match(subject.regexp)
+      end
+    end
+
     context "with a boundary char on the end" do
       let(:url) { "http://bar.com/" }
 
