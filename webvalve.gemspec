@@ -45,6 +45,6 @@ Gem::Specification.new do |s|
     2. URL suffix matching is now strict. For example, `BAR_URL=http://bar.co` will
        no longer match `https://bar.com`, but it will match `http://bar.co/foo`. If
        you need to preserve the previous behavior, you can add a trailing `*` to
-       your URL spec to get the previous behavior, e.g. `BAR_URL=http://bar.co*`.
+       your URL spec, e.g. `BAR_URL=http://bar.co*`.
   MSG
 end
