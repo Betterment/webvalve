@@ -42,9 +42,9 @@ Gem::Specification.new do |s|
        segments. In the unlikely event that your URLs use `*` literals, you'll need
        to URL encode them (`%2A`) both in your URL spec and at runtime.
 
-    2. URL suffix matching is now strict. `BAR_URL=http://bar.co` will no longer
-       match `https://bar.com`, but it will match `http://bar.co/foo`. If you need
-       to preserve this behavior, you can add a trailing `*` to your URL spec to
-       get the previous behavior, e.g. `BAR_URL=http://bar.co*`.
+    2. URL suffix matching is now strict. For example, `BAR_URL=http://bar.co` will
+       no longer match `https://bar.com`, but it will match `http://bar.co/foo`. If
+       you need to preserve the previous behavior, you can add a trailing `*` to
+       your URL spec to get the previous behavior, e.g. `BAR_URL=http://bar.co*`.
   MSG
 end
