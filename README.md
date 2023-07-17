@@ -218,7 +218,7 @@ WebValve.register FakeBank, url: ENV.fetch("SOME_CUSTOM_API_URL")
 WebValve.register FakeBank, url: "https://some-service.com"
 ```
 
-## Mocking dynamic URLs with wildcards
+## Using wildcards for dynamic URLs
 
 If the service you are interacting with contains dynamic elements, e.g.
 an instance-specific subdomain, you can specify a wildcard in your url
