@@ -22,7 +22,7 @@ RSpec.describe WebValve::ServiceUrlConverter do
     context "with an Addressable::Template" do
       let(:url) { Addressable::Template.new("http://foo.com{/path*}") }
 
-      it "returns a template" do
+      it "returns the same object" do
         expect(subject.template).to be_an(Addressable::Template)
         expect(subject.template).to equal(url)
       end
