@@ -10,6 +10,24 @@ RSpec.describe WebValve::ServiceUrlConverter do
       expect(subject.template).to be_an(Addressable::Template)
     end
 
+    context "with a regexp" do
+      let(:url) { %r{\Ahttp://foo\.com} }
+
+      it "returns the same object" do
+        expect(subject.template).to be_a(Regexp)
+        expect(subject.template).to equal(url)
+      end
+    end
+
+    context "with an Addressable::Template" do
+      let(:url) { Addressable::Template.new("http://foo.com{/path*}") }
+
+      it "returns a template" do
+        expect(subject.template).to be_an(Addressable::Template)
+        expect(subject.template).to equal(url)
+      end
+    end
+
     context "with a fragment" do
       let(:url) { "http://foo.com#now" }
 

@@ -23,7 +23,7 @@ module WebValve
         substituted_url = substitute_double_stars(protocol + uri.to_s + suffix)
         Addressable::Template.new(substituted_url)
       else
-        url
+        @url
       end
     end
 
