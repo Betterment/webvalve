@@ -35,3 +35,8 @@ jobs:
           BUNDLE_GEMFILE: ${{ matrix.gemfile }}
         run: |
           bundle exec rake
+  ci-check:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 0
