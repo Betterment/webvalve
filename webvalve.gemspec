@@ -29,5 +29,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "yard"
   s.add_development_dependency "rails"
 
-  s.required_ruby_version = ">= 2.6.0"
+  s.required_ruby_version = ">= 3.0.0"
 end

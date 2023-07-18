@@ -9,10 +9,17 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
+## [1.3.0] - 2023-07-18
+### Added
+- Official support for Ruby 3.1 and 3.2
+### Removed
+- Drops support for Rails < 6.1
+- Drops support for Ruby < 3.0
+
 ## [1.2.0] - 2021-12-16
 ### Added
 - Official support for Ruby 2.7 and 3.0
-- Official support for Rails 6.2 and 7.0
+- Official support for Rails 6.1 and 7.0
 ### Removed
 - Drops support for Rails < 5.2
 - Drops support for Ruby < 2.6
