@@ -48,8 +48,8 @@ module WebValve
     end
 
     # Munges the provided URI object to append extensible path and query
-    # variables. If neither query nor path are present, returned suffix
-    # will include path and/or query patterns.
+    # variables. If query or path are not present, returned suffix will include
+    # path and/or query patterns.
     def extend_path_and_query!(uri)
       suffix = ''
 
