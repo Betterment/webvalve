@@ -38,9 +38,6 @@ RSpec.describe WebValve::Manager do
   end
 
   describe '#setup' do
-    let(:wildcard_substitution) { WebValve::ServiceUrlConverter::WILDCARD_SUBSTITUTION }
-    let(:url_suffix_pattern) { WebValve::ServiceUrlConverter::URL_SUFFIX_PATTERN }
-
     context 'when WebValve is disabled' do
       around do |ex|
         with_rails_env 'production' do
@@ -98,10 +95,10 @@ RSpec.describe WebValve::Manager do
       it 'allowlists configured urls in webmock' do
         allow(WebMock).to receive(:disable_net_connect!)
         results = [
-          %r{\Ahttp://foo\.dev#{url_suffix_pattern}},
-          %r{\Ahttp://bar\.dev#{url_suffix_pattern}},
-          %r{\Ahttp://bar\.#{wildcard_substitution}\.dev#{url_suffix_pattern}},
-          %r{\Ahttp://bar\.dev/\?foo=bar#{url_suffix_pattern}}
+          Addressable::Template.new('http://foo.dev{/path*}{?query}'),
+          Addressable::Template.new('http://bar.dev{/path*}{?query}'),
+          Addressable::Template.new('http://bar.{star}.dev{/path*}{?query}'),
+          Addressable::Template.new('http://bar.dev/?foo=bar{&ext*}')
         ]
 
         subject.allow_url 'http://foo.dev'
@@ -125,7 +122,7 @@ RSpec.describe WebValve::Manager do
           subject.setup
         end
 
-        expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://something\.dev#{url_suffix_pattern}})
+        expect(WebMock).to have_received(:stub_request).with(:any, Addressable::Template.new('http://something.dev{/path*}{?query}'))
         expect(web_mock_stubble).to have_received(:to_rack)
       end
 
@@ -163,7 +160,7 @@ RSpec.describe WebValve::Manager do
           subject.register other_disabled_service.name
 
           expect { subject.setup }.to_not raise_error
-          expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://something\.dev#{url_suffix_pattern}}).twice
+          expect(WebMock).to have_received(:stub_request).with(:any, Addressable::Template.new('http://something.dev{/path*}{?query}')).twice
         end
       end
     end
@@ -218,8 +215,8 @@ RSpec.describe WebValve::Manager do
             subject.setup
           end
 
-          expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://something\.dev#{url_suffix_pattern}})
-          expect(WebMock).not_to have_received(:stub_request).with(:any, %r{\Ahttp://other\.dev#{url_suffix_pattern}})
+          expect(WebMock).to have_received(:stub_request).with(:any, Addressable::Template.new('http://something.dev{/path*}{?query}'))
+          expect(WebMock).not_to have_received(:stub_request).with(:any, Addressable::Template.new('http://other.dev{/path*}{?query}'))
           expect(web_mock_stubble).to have_received(:to_rack).once
         end
 
@@ -271,9 +268,9 @@ RSpec.describe WebValve::Manager do
           subject.setup
         end
 
-        expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://something\.dev#{url_suffix_pattern}})
-        expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://something\-else\.dev#{url_suffix_pattern}})
-        expect(WebMock).to have_received(:stub_request).with(:any, %r{\Ahttp://other\.dev#{url_suffix_pattern}})
+        expect(WebMock).to have_received(:stub_request).with(:any, Addressable::Template.new('http://something.dev{/path*}{?query}'))
+        expect(WebMock).to have_received(:stub_request).with(:any, Addressable::Template.new('http://something-else.dev{/path*}{?query}'))
+        expect(WebMock).to have_received(:stub_request).with(:any, Addressable::Template.new('http://other.dev{/path*}{?query}'))
         expect(web_mock_stubble).to have_received(:to_rack).exactly(3).times
       end
     end

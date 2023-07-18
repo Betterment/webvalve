@@ -1,9 +1,8 @@
+require 'addressable/uri'
+require 'addressable/template'
+
 module WebValve
   class ServiceUrlConverter
-    TOKEN_BOUNDARY_CHARS = Regexp.escape('.:/?#@&=').freeze
-    WILDCARD_SUBSTITUTION = ('[^' + TOKEN_BOUNDARY_CHARS + ']*').freeze
-    URL_PREFIX_BOUNDARY = ('[' + TOKEN_BOUNDARY_CHARS + ']').freeze
-    URL_SUFFIX_PATTERN = ('((' + URL_PREFIX_BOUNDARY + '|(?<=' + URL_PREFIX_BOUNDARY + ')).*)?\z').freeze
 
     attr_reader :url
 
@@ -11,10 +10,40 @@ module WebValve
       @url = url
     end
 
-    def regexp
-      regexp_string = Regexp.escape(url)
-      substituted_regexp_string = regexp_string.gsub('\*', WILDCARD_SUBSTITUTION)
-      %r(\A#{substituted_regexp_string}#{URL_SUFFIX_PATTERN})
+    def template
+      if url.is_a?(String)
+        working_url = url.gsub('*', '**')
+        protocol = ""
+        if matchdata = %r{\A([^:]+:)(//.*)\z}.match(working_url)
+          protocol = matchdata[1]
+          working_url = matchdata[2]
+        end
+        uri = Addressable::URI.parse(working_url)
+
+        if uri.fragment.present?
+          raise "Webvalve: URL Fragments are not valid: #{url}"
+        end
+
+        suffix = ""
+
+        if uri.query.present?
+          uri.query = "#{uri.query}{&ext*}"
+        else
+          if uri.path == "/" || uri.path == ""
+            uri.path = ""
+            suffix += "{/path*}"
+          else
+            uri.path = "#{uri.path}{/ext*}"
+          end
+
+          suffix += "{?query}"
+        end
+
+        substituted_url = (protocol + uri.to_s).gsub('**', '{star}')
+        Addressable::Template.new(substituted_url + suffix)
+      else
+        url
+      end
     end
   end
 end

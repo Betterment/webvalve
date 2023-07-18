@@ -127,12 +127,12 @@ module WebValve
 
     def webmock_disable_options
       { allow_localhost: true }.tap do |opts|
-        opts[:allow] = allowlisted_url_regexps unless WebValve.env.test?
+        opts[:allow] = allowlisted_url_templates unless WebValve.env.test?
       end
     end
 
-    def allowlisted_url_regexps
-      allowlisted_urls.map { |url| url_to_regexp url }
+    def allowlisted_url_templates
+      allowlisted_urls.map { |url| url_to_template url }
     end
 
     def webmock_service(config)
@@ -140,7 +140,7 @@ module WebValve
 
       WebMock.stub_request(
         :any,
-        url_to_regexp(config.service_url)
+        url_to_template(config.service_url)
       ).to_rack(FakeServiceWrapper.new(config))
     end
 
@@ -148,8 +148,8 @@ module WebValve
       allowlisted_urls << config.service_url
     end
 
-    def url_to_regexp(url)
-      ServiceUrlConverter.new(url: url).regexp
+    def url_to_template(url)
+      ServiceUrlConverter.new(url: url).template
     end
 
     def ensure_non_duplicate_stub(config)
