@@ -25,6 +25,8 @@ jobs:
         if: github.event_name == 'pull_request'
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
+        env:
+          BUNDLE_GEMFILE: ${{ matrix.gemfile }}
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
