@@ -54,7 +54,7 @@ module WebValve
       suffix = ''
 
       if uri.query.present?
-        uri.query += '{&ext*}'
+        uri.query = "#{uri.query}{&ext*}"
       else
         if uri.path == '/' || uri.path == ''
           uri.path = ''
