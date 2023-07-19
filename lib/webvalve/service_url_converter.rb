@@ -29,7 +29,7 @@ module WebValve
 
     private
 
-    # Doubles asterisks to retain Addressable::URI parseability while making
+    # Doubles asterisks to retain Addressable::URL parseability while making
     # wildcards distinct from the asterisks we'll be adding later. That way
     # we can later gsub double asterisks to Addressable::Template variables
     # in `#substitute_double_stars`
@@ -37,7 +37,7 @@ module WebValve
       working_url.gsub('*', '**')
     end
 
-    # Splits protocol off to keep Addressable::URI from rejecting a scheme with
+    # Splits protocol off to keep Addressable::URL from rejecting a scheme with
     # asterisks in it. We'll recombine later. Returns [protocol, url]
     def split_protocol(working_url)
       if matchdata = %r{\A([^:]+:)(//.*)\z}.match(working_url)
