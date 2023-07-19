@@ -63,7 +63,7 @@ module WebValve
           uri.path += '{/ext*}'
         end
 
-        suffix += '{?query*}'
+        suffix += '{?query}'
       end
 
       suffix

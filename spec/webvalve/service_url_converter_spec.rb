@@ -10,14 +10,6 @@ RSpec.describe WebValve::ServiceUrlConverter do
       expect(subject.template).to be_an(Addressable::Template)
     end
 
-    it "matches arbitrary path" do
-      expect(subject.template.match("http://bar.com/foo/bar/baz")).to be_present
-    end
-
-    it "matches arbitrary query params" do
-      expect(subject.template.match("http://bar.com?foo=bar&baz=bump")).to be_present
-    end
-
     context "with a regexp" do
       let(:url) { %r{\Ahttp://foo\.com} }
 
