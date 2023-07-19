@@ -5,17 +5,17 @@ RSpec.describe WebValve::ServiceUrlConverter do
 
   subject { described_class.new(url: url) }
 
-  describe '#template' do
-    it "returns a template" do
-      expect(subject.template).to be_an(Addressable::Template)
+  describe '#regexp' do
+    it "returns a regexp" do
+      expect(subject.regexp).to be_a(Regexp)
     end
 
     context "with a regexp" do
       let(:url) { %r{\Ahttp://foo\.com} }
 
       it "returns the same object" do
-        expect(subject.template).to be_a(Regexp)
-        expect(subject.template).to equal(url)
+        expect(subject.regexp).to be_a(Regexp)
+        expect(subject.regexp).to equal(url)
       end
     end
 
@@ -23,16 +23,8 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { Addressable::Template.new("http://foo.com{/path*}") }
 
       it "returns the same object" do
-        expect(subject.template).to be_an(Addressable::Template)
-        expect(subject.template).to equal(url)
-      end
-    end
-
-    context "with a fragment" do
-      let(:url) { "http://foo.com#now" }
-
-      it "raises an error" do
-        expect { subject.template }.to raise_error(/fragments are not valid/i)
+        expect(subject.regexp).to be_an(Addressable::Template)
+        expect(subject.regexp).to equal(url)
       end
     end
 
@@ -40,15 +32,15 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "" }
 
       it "matches empty string" do
-        expect(subject.template.match("")).to be_present
+        expect("").to match(subject.regexp)
       end
 
       it "matches a string starting with a URL delimiter because the rest is just interpreted as suffix" do
-        expect(subject.template.match("//foo")).to be_present
+        expect(":do:do:dodo:do:do").to match(subject.regexp)
       end
 
       it "doesn't match a string that doesn't start with a delimiter" do
-        expect(subject.template.match("http://foo")).to eq(nil)
+        expect("jamietart:do:do:dodo:do:do").not_to match(subject.regexp)
       end
     end
 
@@ -56,7 +48,7 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://bar.com/" }
 
       it "matches arbitrary suffixes" do
-        expect(subject.template.match("http://bar.com/baz/bump/beep")).to be_present
+        expect("http://bar.com/baz/bump/beep").to match(subject.regexp)
       end
     end
 
@@ -64,11 +56,11 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://bar.com/**/bump" }
 
       it "matches like a single asterisk" do
-        expect(subject.template.match("http://bar.com/foo/bump")).to be_present
+        expect("http://bar.com/foo/bump").to match(subject.regexp)
       end
 
       it "doesn't match like a filesystem glob" do
-        expect(subject.template.match("http://bar.com/foo/bar/bump")).to eq(nil)
+        expect("http://bar.com/foo/bar/bump").not_to match(subject.regexp)
       end
     end
 
@@ -76,19 +68,19 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://bar.com/*" }
 
       it "matches when empty" do
-        expect(subject.template.match("http://bar.com/")).to be_present
+        expect("http://bar.com/").to match(subject.regexp)
       end
 
       it "matches when existing" do
-        expect(subject.template.match("http://bar.com/foobaloo")).to be_present
+        expect("http://bar.com/foobaloo").to match(subject.regexp)
       end
 
       it "matches with additional tokens" do
-        expect(subject.template.match("http://bar.com/foobaloo/wink")).to be_present
+        expect("http://bar.com/foobaloo/wink").to match(subject.regexp)
       end
 
       it "doesn't match when missing the trailing slash tho" do
-        expect(subject.template.match("http://bar.com")).to eq(nil)
+        expect("http://bar.com").not_to match(subject.regexp)
       end
     end
 
@@ -96,11 +88,15 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "*://bar.com" }
 
       it "matches http" do
-        expect(subject.template.match("http://bar.com/")).to be_present
+        expect("http://bar.com/").to match(subject.regexp)
       end
 
       it "matches anything else" do
-        expect(subject.template.match("gopher://bar.com/")).to be_present
+        expect("gopher://bar.com/").to match(subject.regexp)
+      end
+
+      it "matches empty" do
+        expect("://bar.com").to match(subject.regexp)
       end
     end
 
@@ -108,11 +104,11 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http*://bar.com" }
 
       it "matches empty" do
-        expect(subject.template.match("http://bar.com/")).to be_present
+        expect("http://bar.com/").to match(subject.regexp)
       end
 
       it "matches full" do
-        expect(subject.template.match("https://bar.com/")).to be_present
+        expect("https://bar.com/").to match(subject.regexp)
       end
     end
 
@@ -120,7 +116,7 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://bar.co" }
 
       it "doesn't match a different TLD when extending" do
-        expect(subject.template.match("http://bar.com")).to eq(nil)
+        expect("http://bar.com").not_to match(subject.regexp)
       end
     end
 
@@ -128,11 +124,11 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://*.bar.com" }
 
       it "matches" do
-        expect(subject.template.match("http://foo.bar.com")).to be_present
+        expect("http://foo.bar.com").to match(subject.regexp)
       end
 
-      it "matches with extra subdomains" do
-        expect(subject.template.match("http://beep.foo.bar.com")).to be_present
+      it "doesn't match when too many subdomains" do
+        expect("http://beep.foo.bar.com").not_to match(subject.regexp)
       end
     end
 
@@ -140,15 +136,15 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://foo*.bar.com" }
 
       it "matches when present" do
-        expect(subject.template.match("http://foobaz.bar.com")).to be_present
+        expect("http://foobaz.bar.com").to match(subject.regexp)
       end
 
       it "matches when empty" do
-        expect(subject.template.match("http://foo.bar.com")).to be_present
+        expect("http://foo.bar.com").to match(subject.regexp)
       end
 
       it "doesn't match when out of order" do
-        expect(subject.template.match("http://bazfoo.bar.com")).to eq(nil)
+        expect("http://bazfoo.bar.com").not_to match(subject.regexp)
       end
     end
 
@@ -156,11 +152,11 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://*baz.bar.com" }
 
       it "matches when present" do
-        expect(subject.template.match("http://foobaz.bar.com")).to be_present
+        expect("http://foobaz.bar.com").to match(subject.regexp)
       end
 
       it "matches when empty" do
-        expect(subject.template.match("http://baz.bar.com")).to be_present
+        expect("http://baz.bar.com").to match(subject.regexp)
       end
     end
 
@@ -168,31 +164,27 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://*:*@bar.com" }
 
       it "matches when present" do
-        expect(subject.template.match("http://bilbo:baggins@bar.com")).to be_present
+        expect("http://bilbo:baggins@bar.com").to match(subject.regexp)
       end
 
       it "doesn't match when malformed" do
-        expect(subject.template.match("http://bilbobaggins@bar.com")).to eq(nil)
+        expect("http://bilbobaggins@bar.com").not_to match(subject.regexp)
       end
 
       it "doesn't match when missing password part" do
-        expect(subject.template.match("http://bilbo@bar.com")).to eq(nil)
+        expect("http://bilbo@bar.com").not_to match(subject.regexp)
       end
     end
 
     context "with a wildcarded path" do
       let(:url) { "http://bar.com/*/whatever" }
 
-      it "matches with a wildcarded path segment" do
-        expect(subject.template.match("http://bar.com/big/whatever")).to be_present
-      end
-
-      it "doesn't match when you throw an extra directory level in there" do
-        expect(subject.template.match("http://bar.com/big/bag/whatever")).to eq(nil)
+      it "matches with arbitrarily spicy but legal, non-URL-significant characters" do
+        expect("http://bar.com/a0-_~[]!$'(),;%+/whatever").to match(subject.regexp)
       end
 
       it "doesn't match when you throw a URL-significant char in there" do
-        expect(subject.template.match("http://bar.com/life=love/whatever")).to eq(nil)
+        expect("http://bar.com/life=love/whatever").not_to match(subject.regexp)
       end
     end
 
@@ -200,11 +192,11 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://bar.com/whatever?foo=*&bar=bump" }
 
       it "matches when present" do
-        expect(subject.template.match("http://bar.com/whatever?foo=baz&bar=bump")).to be_present
+        expect("http://bar.com/whatever?foo=baz&bar=bump").to match(subject.regexp)
       end
 
       it "doesn't match when you throw a URL-significant char in there" do
-        expect(subject.template.match("http://bar.com/whatever?foo=baz#&bar=bump")).to eq(nil)
+        expect("http://bar.com/whatever?foo=baz#&bar=bump").not_to match(subject.regexp)
       end
     end
   end
