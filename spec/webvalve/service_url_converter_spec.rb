@@ -32,7 +32,7 @@ RSpec.describe WebValve::ServiceUrlConverter do
       let(:url) { "http://foo.com#now" }
 
       it "raises an error" do
-        expect { subject.template }.to raise_error(/fragment will never match/i)
+        expect { subject.template }.to raise_error(/fragments are not valid/i)
       end
     end
 

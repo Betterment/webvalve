@@ -15,7 +15,7 @@ module WebValve
         uri = Addressable::URI.parse(working_url)
 
         if uri.fragment.present?
-          raise "Webvalve: URL Fragment will never match: #{@url}"
+          raise "Webvalve: URL Fragments are not valid: #{@url}"
         end
 
         suffix = extend_path_and_query!(uri)
