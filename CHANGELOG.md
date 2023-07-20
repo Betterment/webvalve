@@ -9,6 +9,11 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
+## [1.3.1] - 2023-07-20
+### Changed
+- Replace usage of deprecated `File.exists?` in generator
+  (https://github.com/Betterment/webvalve/pull/57) (thanks @tmnsun)
+
 ## [1.3.0] - 2023-07-18
 ### Added
 - Official support for Ruby 3.1 and 3.2
