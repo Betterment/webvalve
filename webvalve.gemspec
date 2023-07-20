@@ -30,4 +30,21 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rails"
 
   s.required_ruby_version = ">= 3.0.0"
+
+  s.post_install_message = <<~MSG
+    Thanks for installing WebValve!
+
+    Note for upgraders: If you're upgrading from a version less than 2.0, service
+    URL behavior has changed. Please verify that your app isn't relying on the
+    previous behavior:
+
+    1. `*` characters are now interpreted as wildcards, enabling dynamic URL
+       segments. In the unlikely event that your URLs use `*` literals, you'll need
+       to URL encode them (`%2A`) both in your URL spec and at runtime.
+
+    2. URL suffix matching is now strict. For example, `BAR_URL=http://bar.co` will
+       no longer match `https://bar.com`, but it will match `http://bar.co/foo`. If
+       you need to preserve the previous behavior, you can add a trailing `*` to
+       your URL spec, e.g. `BAR_URL=http://bar.co*`.
+  MSG
 end

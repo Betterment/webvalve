@@ -218,6 +218,43 @@ WebValve.register FakeBank, url: ENV.fetch("SOME_CUSTOM_API_URL")
 WebValve.register FakeBank, url: "https://some-service.com"
 ```
 
+## Dynamic URLs
+
+If the service you are interacting with contains dynamic elements, e.g.
+an instance-specific subdomain, you can specify a wildcard in your url
+with the `*` character to match a series of zero or more characters
+within the same URL segment. For example:
+
+```bash
+export BANK_API_URL=https://*.mybank.com/
+```
+
+or
+
+```ruby
+WebValve.register FakeBank, url: "https://*.mybank.com"
+```
+
+Note: unlike filesystem globbing, `?` isn't respected to mean "exactly
+one character" because it's a URL delimiter character. Only `*` works
+for WebValve URL wildcards.
+
+Alternatively you can use `Addressable::Template`s or `Regexp`s to
+specify dynamic URLs if they for some reason aren't a good fit for the
+wildcard syntax. Note that there is no `ENV` var support for these
+formats because there is no detection logic to determine a URL string is
+actually meant to represent a URL template or regexp. For example:
+
+```ruby
+WebValve.register FakeBank, url: Addressable::Template.new("http://mybank.com{/path*}{?query}")
+```
+
+or
+
+```ruby
+WebValve.register FakeBank, url: %r{\Ahttp://mybank.com(/.*)?\z}
+```
+
 ## What's in a `FakeService`?
 
 The definition of `FakeService` is really simple. It's just a

@@ -1,6 +1,7 @@
 require 'webmock'
 require 'singleton'
 require 'set'
+require 'webvalve/service_url_converter'
 
 module WebValve
   ALWAYS_ENABLED_ENVS = %w(development test).freeze
@@ -148,7 +149,7 @@ module WebValve
     end
 
     def url_to_regexp(url)
-      %r(\A#{Regexp.escape url})
+      ServiceUrlConverter.new(url: url).regexp
     end
 
     def ensure_non_duplicate_stub(config)
