@@ -9,6 +9,10 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
+## [2.0.0] - 2023-07-20
+### Added
+- Dynamic URL support via wildcards, Regexps, and Addressable::Templates
+
 ## [1.3.1] - 2023-07-20
 ### Changed
 - Replace usage of deprecated `File.exists?` in generator
