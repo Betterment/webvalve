@@ -43,7 +43,7 @@ module Webvalve
       end
 
       def require_config!
-        raise 'No WebValve configuration file found. Please run `rails generate webvalve:install` first' unless File.exists?(config_file_path)
+        raise 'No WebValve configuration file found. Please run `rails generate webvalve:install` first' unless File.exist?(config_file_path)
       end
 
       def config_file_path
