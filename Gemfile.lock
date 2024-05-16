@@ -3,8 +3,8 @@ PATH
   specs:
     webvalve (2.0.0)
       activesupport (>= 5.2.0)
-      sinatra (>= 1.4, < 3)
-      sinatra-contrib (>= 1.4, < 3)
+      sinatra (>= 1.4)
+      sinatra-contrib (>= 1.4)
       webmock (>= 2.0)
 
 GEM
@@ -126,7 +126,7 @@ GEM
     mini_mime (1.1.5)
     minitest (5.22.2)
     multi_json (1.15.0)
-    mustermann (2.0.2)
+    mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     mutex_m (0.2.0)
     net-imap (0.4.10)
@@ -139,6 +139,8 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
+    nokogiri (1.16.5-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.16.5-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.16.5-x86_64-linux)
@@ -150,16 +152,17 @@ GEM
       stringio
     public_suffix (5.0.4)
     racc (1.7.3)
-    rack (2.2.8.1)
-    rack-protection (2.2.4)
-      rack
-    rack-session (1.0.2)
-      rack (< 3)
+    rack (3.0.11)
+    rack-protection (4.0.0)
+      base64 (>= 0.1.0)
+      rack (>= 3.0.0, < 4)
+    rack-session (2.0.0)
+      rack (>= 3.0.0)
     rack-test (2.1.0)
       rack (>= 1.3)
-    rackup (1.0.0)
-      rack (< 3)
-      webrick
+    rackup (2.1.0)
+      rack (>= 3)
+      webrick (~> 1.8)
     rails (7.1.3.1)
       actioncable (= 7.1.3.1)
       actionmailbox (= 7.1.3.1)
@@ -209,16 +212,17 @@ GEM
       rspec-support (~> 3.12.0)
     rspec-support (3.12.1)
     ruby2_keywords (0.0.5)
-    sinatra (2.2.4)
-      mustermann (~> 2.0)
-      rack (~> 2.2)
-      rack-protection (= 2.2.4)
+    sinatra (4.0.0)
+      mustermann (~> 3.0)
+      rack (>= 3.0.0, < 4)
+      rack-protection (= 4.0.0)
+      rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
-    sinatra-contrib (2.2.4)
-      multi_json
-      mustermann (~> 2.0)
-      rack-protection (= 2.2.4)
-      sinatra (= 2.2.4)
+    sinatra-contrib (4.0.0)
+      multi_json (>= 0.0.2)
+      mustermann (~> 3.0)
+      rack-protection (= 4.0.0)
+      sinatra (= 4.0.0)
       tilt (~> 2.0)
     stringio (3.1.0)
     thor (1.3.1)
@@ -238,6 +242,7 @@ GEM
     zeitwerk (2.6.13)
 
 PLATFORMS
+  arm64-darwin-22
   x86_64-darwin-22
   x86_64-linux
 
