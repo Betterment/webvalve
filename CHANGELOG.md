@@ -6,6 +6,8 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 
 ## [Unreleased]
 ### Changed
+- Remove constraint on sinatra < 3 to allow for newer rack and sinatra
+  usages (https://github.com/Betterment/webvalve/pull/65) (thanks @co-vladimir-ya)
 ### Added
 ### Removed
 
