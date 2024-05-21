@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    webvalve (2.0.0)
+    webvalve (2.0.1)
       activesupport (>= 5.2.0)
       sinatra (>= 1.4)
       sinatra-contrib (>= 1.4)
@@ -266,4 +266,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.5.6
+   2.4.22
