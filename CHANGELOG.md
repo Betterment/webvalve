@@ -9,6 +9,10 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Added
 ### Removed
 
+## [2.0.2] - 2024-06-10
+### Changed
+- Fix file permissions in bundled gem
+
 ## [2.0.1] - 2024-05-21
 ### Changed
 - Remove constraint on sinatra < 3 to allow for newer rack and sinatra
