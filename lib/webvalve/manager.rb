@@ -157,7 +157,13 @@ module WebValve
 
     def ensure_non_duplicate_stub(config)
       already_stubbed_url = stubbed_urls.find { |stubbed_url| stubbed_url == [config.full_url, config.with_request_params] }
-      raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.full_url} with #{config.with_request_params}" if already_stubbed_url
+      if already_stubbed_url
+        if config.with_request_params
+          raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.full_url} with #{config.with_request_params}"
+        else
+          raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.full_url}"
+        end
+      end
 
       stubbed_urls << [config.full_url, config.with_request_params]
     end
