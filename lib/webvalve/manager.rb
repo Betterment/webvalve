@@ -138,10 +138,13 @@ module WebValve
     def webmock_service(config)
       ensure_non_duplicate_stub(config)
 
-      WebMock.stub_request(
+      webmock_stub = WebMock.stub_request(
         :any,
         url_to_regexp(config.service_url)
-      ).to_rack(FakeServiceWrapper.new(config))
+      )
+      webmock_stub = webmock_stub.with(config.with_request_params) if config.with_request_params
+
+      webmock_stub.to_rack(FakeServiceWrapper.new(config))
     end
 
     def allowlist_service(config)
@@ -153,8 +156,10 @@ module WebValve
     end
 
     def ensure_non_duplicate_stub(config)
-      raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.full_url}" if stubbed_urls.include?(config.full_url)
-      stubbed_urls << config.full_url
+      already_stubbed_url = stubbed_urls.find { |stubbed_url| stubbed_url == [config.full_url, config.with_request_params] }
+      raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.full_url} with #{config.with_request_params}" if already_stubbed_url
+
+      stubbed_urls << [config.full_url, config.with_request_params]
     end
 
     def load_configs!
