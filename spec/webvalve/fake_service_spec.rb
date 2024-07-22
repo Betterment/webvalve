@@ -66,5 +66,55 @@ RSpec.describe WebValve::FakeService do
         end
       end
     end
+
+    context "when we specify a request matcher" do
+      it 'returns the result from the fake when a mapped route is requested' do
+        with_env 'DUMMY_API_URL' => 'http://dummy.dev' do
+          WebValve.register subject.name, request_matcher: { query: {action: "foo"} }
+          WebValve.setup
+
+          expect(Net::HTTP.get(URI('http://dummy.dev/widgets?action=foo'))).to eq({ result: 'it works!' }.to_json)
+        end
+      end
+
+      it "does not return the result from the fake when the request matcher doesn't match" do
+        with_env 'DUMMY_API_URL' => 'http://dummy.dev' do
+          WebValve.register subject.name, request_matcher: { query: {action: "bar"} }
+          WebValve.setup
+
+          expect { Net::HTTP.get(URI('http://dummy.dev/widgets?action=foo')) }
+            .to raise_error(WebMock::NetConnectNotAllowedError, /Real HTTP connections are disabled/)
+        end
+      end
+
+      context "with another fake service" do
+        let(:another_fake_service) do
+          Class.new(described_class) do
+            def self.name
+              'FakeAnother'
+            end
+
+            get '/widgets' do
+              json({ result: 'it works again!' })
+            end
+          end
+        end
+
+        before do
+          stub_const('FakeAnother', another_fake_service)
+        end
+
+        it "does not return the result from the fake when the request matcher doesn't match" do
+          with_env 'DUMMY_API_URL' => 'http://dummy.dev', 'ANOTHER_API_URL' => 'http://dummy.dev' do
+            WebValve.register subject.name, request_matcher: { query: {action: "foo"} }
+            WebValve.register another_fake_service.name, request_matcher: { query: {action: "bar"} }
+            WebValve.setup
+
+            expect(Net::HTTP.get(URI('http://dummy.dev/widgets?action=foo'))).to eq({ result: 'it works!' }.to_json)
+            expect(Net::HTTP.get(URI('http://dummy.dev/widgets?action=bar'))).to eq({ result: 'it works again!' }.to_json)
+          end
+        end
+      end
+    end
   end
 end

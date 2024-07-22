@@ -152,6 +152,36 @@ RSpec.describe WebValve::Manager do
         end
       end
 
+      it 'raises with duplicate stubbed urls with same `request_matcher` parameter' do
+        service = class_double(WebValve::FakeService, name: 'FakeSomething')
+        other_service = class_double(WebValve::FakeService, name: 'FakeOtherThing')
+
+        subject.register service.name, url: "http://something.dev", request_matcher: { body: 'foo' }
+        subject.register other_service.name, url: "http://something.dev", request_matcher: { body: 'foo' }
+
+        expect { subject.setup }.to raise_error('Invalid config for FakeOtherThing. Already stubbed url http://something.dev with {:body=>"foo"}')
+      end
+
+      it 'raises with duplicate stubbed urls when `request_matcher` parameter is nil' do
+        service = class_double(WebValve::FakeService, name: 'FakeSomething')
+        other_service = class_double(WebValve::FakeService, name: 'FakeOtherThing')
+
+        subject.register service.name, url: "http://something.dev"
+        subject.register other_service.name, url: "http://something.dev", request_matcher: { body: 'foo' }
+
+        expect { subject.setup }.to raise_error('Invalid config for FakeOtherThing. Already stubbed url http://something.dev')
+      end
+
+      it 'does not raise error with duplicate stubbed urls but different `request_matcher` parameters' do
+        service = class_double(WebValve::FakeService, name: 'FakeSomething')
+        other_service = class_double(WebValve::FakeService, name: 'FakeOtherThing')
+
+        subject.register service.name, url: "http://something.dev", request_matcher: { body: 'bar' }
+        subject.register other_service.name, url: "http://something.dev", request_matcher: { body: 'foo' }
+
+        expect { subject.setup }.not_to raise_error
+      end
+
       it 'does not raise with different HTTP auth patterns' do
         disabled_service = class_double(WebValve::FakeService, name: 'FakeSomething')
         other_disabled_service = class_double(WebValve::FakeService, name: 'FakeOtherThing')
