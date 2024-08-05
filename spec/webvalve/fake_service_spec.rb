@@ -106,8 +106,8 @@ RSpec.describe WebValve::FakeService do
 
         it "does not return the result from the fake when the request matcher doesn't match" do
           with_env 'DUMMY_API_URL' => 'http://dummy.dev', 'ANOTHER_API_URL' => 'http://dummy.dev' do
-            WebValve.register subject.name, request_matcher: { query: {action: "foo"} }
-            WebValve.register another_fake_service.name, request_matcher: { query: {action: "bar"} }
+            WebValve.register subject.name, request_matcher: { query: { action: "foo" } }
+            WebValve.register another_fake_service.name, request_matcher: { query: { action: "bar" } }
             WebValve.setup
 
             expect(Net::HTTP.get(URI('http://dummy.dev/widgets?action=foo'))).to eq({ result: 'it works!' }.to_json)
