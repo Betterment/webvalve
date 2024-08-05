@@ -139,7 +139,14 @@ module WebValve
       ensure_non_duplicate_stub(config)
 
       webmock_stub = WebMock.stub_request(:any, url_to_regexp(config.service_url))
-      webmock_stub = webmock_stub.with(config.request_matcher) if config.request_matcher
+
+      if config.request_matcher
+        if config.request_matcher.respond_to?(:call)
+          webmock_stub.with(&config.request_matcher)
+        else
+          webmock_stub.with(config.request_matcher)
+        end
+      end
 
       webmock_stub.to_rack(FakeServiceWrapper.new(config))
     end
