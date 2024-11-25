@@ -86,7 +86,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    appraisal (2.2.0)
+    appraisal (2.5.0)
       bundler
       rake
       thor (>= 0.14.0)
@@ -252,7 +252,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  appraisal (~> 2.2.0)
+  appraisal (~> 2.5.0)
   pry
   rails
   rspec

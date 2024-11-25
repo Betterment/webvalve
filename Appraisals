@@ -7,4 +7,5 @@ appraise 'rails-7-0' do
 end
 
 appraise 'ruby' do
+  gem 'sinatra', '~> 4.1.0'
 end
