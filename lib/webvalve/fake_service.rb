@@ -8,6 +8,7 @@ module WebValve
     set :dump_errors, false
     set :show_exceptions, false
     set :raise_errors, true
+    set :host_authorization, ->() { {} }
 
     configure do
       use Instrumentation::Middleware
