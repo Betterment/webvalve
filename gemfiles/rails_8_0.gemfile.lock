@@ -244,7 +244,7 @@ PLATFORMS
 DEPENDENCIES
   appraisal (~> 2.5.0)
   pry
-  rails
+  rails (~> 8.0.0)
   rspec
   webvalve!
   yard
