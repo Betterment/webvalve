@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    webvalve (2.0.2)
+    webvalve (2.0.3)
       activesupport (>= 5.2.0)
       sinatra (>= 1.4)
       sinatra-contrib (>= 1.4)
