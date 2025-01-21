@@ -1,7 +1,14 @@
-ENV['RAILS_ENV'] ||= 'test'
 require 'bundler'
 Bundler.require :default, :development
-require File.expand_path('dummy/config/application', __dir__) if ENV['BUNDLE_GEMFILE'] =~ /rails/
+
+if defined?(Rails)
+  ENV['RAILS_ENV'] ||= 'test'
+  require_relative 'dummy/config/application'
+  puts "Testing against Rails #{Rails.gem_version}"
+else
+  puts 'Testing without Rails'
+end
+
 require 'rspec'
 require 'pry'
 require 'webvalve'
