@@ -14,6 +14,7 @@ jobs:
         ruby:
           - 3.2
           - 3.3
+          - 3.4
         gemfile:
           - gemfiles/rails_7_0.gemfile
           - gemfiles/rails_7_1.gemfile
