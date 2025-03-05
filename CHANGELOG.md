@@ -13,6 +13,12 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 
 ### Removed
 
+## 2.0.4 - 2025-03-05
+
+### Changed
+
+- fix broken LogSubscriber bolding (<https//github.com/Betterment/webvalve/pull/85>) (thanks @aburgel)
+
 ## [2.0.3] - 2024-11-26
 
 ### Changed
@@ -73,48 +79,48 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 ### Changed
 
 - Allow the same URL for services as long as basic auth is different
-    (<https://github.com/Betterment/webvalve/pull/46>)
+  (<https://github.com/Betterment/webvalve/pull/46>)
 - Introduce `reset!` and `clear!` to replace `reset`
-    <https://github.com/Betterment/webvalve/pull/45>)
+  <https://github.com/Betterment/webvalve/pull/45>)
 
 ## [1.0.2] - 2020-04-27
 
 ### Changed
 
 - Fix an issue with setup / reset
-    (<https://github.com/Betterment/webvalve/pull/44>)
+  (<https://github.com/Betterment/webvalve/pull/44>)
 
 ## [1.0.1] - 2020-04-24
 
 ### Changed
 
 - Fix an issue in rspec setup / usage of `WebValve.reset`
-    (<https://github.com/Betterment/webvalve/pull/43>)
+  (<https://github.com/Betterment/webvalve/pull/43>)
 
 ## [1.0.0] - 2020-04-22
 
 ### Changed
 
 - Support API_URLs that include path
-    (<https://github.com/Betterment/webvalve/pull/41>)
+  (<https://github.com/Betterment/webvalve/pull/41>)
 
 ## [0.12.0] - 2020-02-22
 
 ### Changed
 
 - raise an error on setup when multiple services are registered to the
-    same url. (<https://github.com/Betterment/webvalve/pull/40>)
+  same url. (<https://github.com/Betterment/webvalve/pull/40>)
 
 ## [0.11.0] - 2019-11-04
 
 ### Changed
 
 - rework configuration so that WebValve has 3 operating modes: off,
-    on+allowing, and on+intercepting. support toggling the latter two
-    modes with
-    `WEBVALVED_ENABLED=1`+`WEBVALVE_SERVICE_ENABLED_DEFAULT=1` and
-    `WEBVALVED_ENABLED=1`+`WEBVALVE_SERVICE_ENABLED_DEFAULT=0`.
-    (<https://github.com/Betterment/webvalve/pull/34>)
+  on+allowing, and on+intercepting. support toggling the latter two
+  modes with
+  `WEBVALVED_ENABLED=1`+`WEBVALVE_SERVICE_ENABLED_DEFAULT=1` and
+  `WEBVALVED_ENABLED=1`+`WEBVALVE_SERVICE_ENABLED_DEFAULT=0`.
+  (<https://github.com/Betterment/webvalve/pull/34>)
 
 ## [0.10.0] - 2019-09-23
 
