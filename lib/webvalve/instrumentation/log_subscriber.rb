@@ -11,7 +11,7 @@ module WebValve
         host = event.payload[:host]
         name = '%s %s (%.1fms)' % ["WebValve", "Request Captured", event.duration]
         details = "#{host} #{method} #{url} [#{status}]"
-        debug "  #{color(name, YELLOW, true)}  #{color(details, BOLD, true)}"
+        debug "  #{color(name, YELLOW, bold: true)}  #{color(details, BLACK, bold: true)}"
       end
     end
   end
