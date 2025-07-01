@@ -23,10 +23,10 @@ jobs:
           - gemfiles/ruby.gemfile
     name: Ruby ${{ matrix.ruby }}, ${{ matrix.gemfile }} Tests
     steps:
-      - uses: technote-space/auto-cancel-redundant-job@v1
+      - uses: technote-space/auto-cancel-redundant-job@7d35aba30420fc2368f8aeed50371e99e7fa3239 # v1
         if: github.event_name == 'pull_request'
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+      - uses: ruby/setup-ruby@a4effe49ee8ee5b8b5091268c473a4628afb5651 # v1
         env:
           BUNDLE_GEMFILE: ${{ matrix.gemfile }}
         with:
