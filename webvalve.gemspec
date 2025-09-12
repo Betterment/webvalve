@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pry"
   s.add_development_dependency "yard"
 
-  s.required_ruby_version = ">= 3.0.0"
+  s.required_ruby_version = ">= 3.2"
 
   s.post_install_message = <<~MSG
     Thanks for installing WebValve!
