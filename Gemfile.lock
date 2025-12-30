@@ -95,7 +95,7 @@ GEM
     tilt (2.6.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uri (1.0.3)
+    uri (1.0.4)
     webmock (3.24.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
