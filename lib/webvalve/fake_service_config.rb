@@ -1,10 +1,11 @@
 module WebValve
   class FakeServiceConfig
-    attr_reader :service_class_name
+    attr_reader :service_class_name, :request_matcher
 
-    def initialize(service_class_name:, url: nil)
+    def initialize(service_class_name:, url: nil, request_matcher: nil)
       @service_class_name = service_class_name
       @custom_service_url = url
+      @request_matcher = request_matcher
     end
 
     def explicitly_enabled?

@@ -19,6 +19,19 @@ RSpec.describe WebValve::FakeServiceConfig do
 
   subject { described_class.new service_class_name: fake_service.name }
 
+  describe 'initialization' do
+    it 'accepts a custom url' do
+      config = described_class.new(service_class_name: fake_service.name, url: 'http://custom.dev')
+      expect(config.full_url).to eq 'http://custom.dev'
+    end
+
+    it 'accepts request_matcher' do
+      request_matcher = { foo: 'bar' }
+      config = described_class.new(service_class_name: fake_service.name, request_matcher: request_matcher)
+      expect(config.request_matcher).to eq request_matcher
+    end
+  end
+
   describe '.explicitly_enabled?' do
     it 'returns false when DUMMY_ENABLED is unset' do
       expect(subject.explicitly_enabled?).to eq false
@@ -110,6 +123,33 @@ RSpec.describe WebValve::FakeServiceConfig do
       with_env 'DUMMY_API_URL' => 'http://zombo.com/welcome/' do
         expect(subject.path_prefix).to eq '/welcome' # Ignores trailing '/'
       end
+    end
+  end
+
+  describe '.full_url' do
+    it 'returns the custom service url when provided' do
+      with_env 'DUMMY_API_URL' => 'http://default.dev' do
+        config = described_class.new(service_class_name: fake_service.name, url: 'http://custom.dev')
+        expect(config.full_url).to eq 'http://custom.dev'
+      end
+    end
+
+    it 'returns the default service url when custom url is not provided' do
+      with_env 'DUMMY_API_URL' => 'http://default.dev' do
+        expect(subject.full_url).to eq 'http://default.dev'
+      end
+    end
+  end
+
+  describe '.request_matcher' do
+    it 'returns the provided request params' do
+      params = { foo: 'bar' }
+      config = described_class.new(service_class_name: fake_service.name, request_matcher: params)
+      expect(config.request_matcher).to eq params
+    end
+
+    it 'returns nil when no request params are provided' do
+      expect(subject.request_matcher).to be_nil
     end
   end
 end

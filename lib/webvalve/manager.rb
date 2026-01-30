@@ -138,10 +138,17 @@ module WebValve
     def webmock_service(config)
       ensure_non_duplicate_stub(config)
 
-      WebMock.stub_request(
-        :any,
-        url_to_regexp(config.service_url)
-      ).to_rack(FakeServiceWrapper.new(config))
+      webmock_stub = WebMock.stub_request(:any, url_to_regexp(config.service_url))
+
+      if config.request_matcher
+        if config.request_matcher.respond_to?(:call)
+          webmock_stub.with(&config.request_matcher)
+        else
+          webmock_stub.with(config.request_matcher)
+        end
+      end
+
+      webmock_stub.to_rack(FakeServiceWrapper.new(config))
     end
 
     def allowlist_service(config)
@@ -153,8 +160,17 @@ module WebValve
     end
 
     def ensure_non_duplicate_stub(config)
-      raise "Invalid config for #{config.service_class_name}. Already stubbed url #{config.full_url}" if stubbed_urls.include?(config.full_url)
-      stubbed_urls << config.full_url
+      already_stubbed_url = stubbed_urls
+        .select { |stubbed_url| stubbed_url[0] == config.full_url }
+        .find { |stubbed_url| (stubbed_url[1].blank? || config.request_matcher.blank? || stubbed_url[1] == config.request_matcher.to_s) }
+
+      if already_stubbed_url
+        error_message =  "Invalid config for #{config.service_class_name}. Already stubbed url #{config.full_url}"
+        error_message << " with #{already_stubbed_url[1]}" if already_stubbed_url[1].present?
+        raise error_message
+      end
+
+      stubbed_urls << [config.full_url, config.request_matcher.to_s]
     end
 
     def load_configs!
