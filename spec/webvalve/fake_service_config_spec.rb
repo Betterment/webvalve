@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'addressable/template'
 
 RSpec.describe WebValve::FakeServiceConfig do
   let(:fake_service) do
@@ -87,6 +88,26 @@ RSpec.describe WebValve::FakeServiceConfig do
         expect(subject.service_url).to eq 'http://thingy.dev'
       end
     end
+
+    context 'when registered with a Regexp url' do
+      let(:url) { %r{\Ahttp://thingy\.dev(/.*)?\z} }
+
+      subject { described_class.new(service_class_name: fake_service.name, url: url) }
+
+      it 'returns the Regexp unchanged' do
+        expect(subject.service_url).to equal(url)
+      end
+    end
+
+    context 'when registered with an Addressable::Template url' do
+      let(:url) { Addressable::Template.new('http://thingy.dev{/path*}') }
+
+      subject { described_class.new(service_class_name: fake_service.name, url: url) }
+
+      it 'returns the Addressable::Template unchanged' do
+        expect(subject.service_url).to equal(url)
+      end
+    end
   end
 
   describe '.path_prefix' do
@@ -109,6 +130,49 @@ RSpec.describe WebValve::FakeServiceConfig do
       end
       with_env 'DUMMY_API_URL' => 'http://zombo.com/welcome/' do
         expect(subject.path_prefix).to eq '/welcome' # Ignores trailing '/'
+      end
+    end
+
+    context 'when registered with a Regexp url' do
+      subject { described_class.new(service_class_name: fake_service.name, url: %r{\Ahttp://thingy\.dev/api(/.*)?\z}) }
+
+      it 'defaults to an empty string so FakeServiceWrapper does not strip from PATH_INFO' do
+        expect(subject.path_prefix).to eq ''
+      end
+    end
+
+    context 'when registered with an Addressable::Template url' do
+      subject { described_class.new(service_class_name: fake_service.name, url: Addressable::Template.new('http://thingy.dev/api{/path*}')) }
+
+      it 'defaults to an empty string so FakeServiceWrapper does not strip from PATH_INFO' do
+        expect(subject.path_prefix).to eq ''
+      end
+    end
+
+    context 'when an explicit path_prefix is provided' do
+      it 'uses the override with a String url' do
+        with_env 'DUMMY_API_URL' => 'http://zombo.com' do
+          config = described_class.new(service_class_name: fake_service.name, path_prefix: '/api/v2')
+          expect(config.path_prefix).to eq '/api/v2'
+        end
+      end
+
+      it 'uses the override with a Regexp url' do
+        config = described_class.new(
+          service_class_name: fake_service.name,
+          url: %r{\Ahttp://thingy\.dev/api/v2(/.*)?\z},
+          path_prefix: '/api/v2',
+        )
+        expect(config.path_prefix).to eq '/api/v2'
+      end
+
+      it 'uses the override with an Addressable::Template url' do
+        config = described_class.new(
+          service_class_name: fake_service.name,
+          url: Addressable::Template.new('http://thingy.dev/api/v2{/path*}'),
+          path_prefix: '/api/v2',
+        )
+        expect(config.path_prefix).to eq '/api/v2'
       end
     end
   end

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'addressable/template'
 
 RSpec.describe WebValve::ServiceUrlConverter do
   let(:url) { "http://bar.com" }
@@ -15,6 +16,14 @@ RSpec.describe WebValve::ServiceUrlConverter do
 
       it "returns the same object" do
         expect(subject.regexp).to be_a(Regexp)
+        expect(subject.regexp).to equal(url)
+      end
+    end
+
+    context "with an Addressable::Template" do
+      let(:url) { Addressable::Template.new("http://foo.com{/path*}") }
+
+      it "returns the same object so WebMock can match against it directly" do
         expect(subject.regexp).to equal(url)
       end
     end
