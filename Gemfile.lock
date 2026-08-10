@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    webvalve (2.2.0)
-      activesupport (>= 6.0)
+    webvalve (2.3.0)
+      activesupport (>= 8.0)
       sinatra (>= 1.4)
       sinatra-contrib (>= 1.4)
       webmock (>= 2.0)
@@ -106,6 +106,7 @@ PLATFORMS
   arm64-darwin-22
   arm64-darwin-23
   arm64-darwin-24
+  arm64-darwin-25
   x86_64-darwin-22
   x86_64-linux
 

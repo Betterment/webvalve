@@ -13,6 +13,13 @@ and this project aims to adhere to [Semantic Versioning](http://semver.org/spec/
 
 ### Removed
 
+## [2.3.0] - 2026-08-10
+
+### Removed
+
+- Drop support for < Ruby 3.3
+- Drop support for < Rails 8.0
+
 ## [2.2.0] - 2025-09-09
 
 ### Removed
