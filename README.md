@@ -255,6 +255,21 @@ or
 WebValve.register FakeBank, url: %r{\Ahttp://mybank.com(/.*)?\z}
 ```
 
+When a `String` URL is registered, WebValve parses any path component out
+of it and strips that prefix from incoming requests before they reach
+your `FakeService` — so a service registered at `https://mybank.com/api`
+can declare its routes as `get '/accounts'` rather than
+`get '/api/accounts'`. WebValve cannot infer a static prefix from a
+`Regexp` or `Addressable::Template`, so by default it does not strip any
+prefix and your fake routes must use the full request path. If you'd
+like to keep relative routes, pass an explicit `path_prefix:`:
+
+```ruby
+WebValve.register FakeBank,
+  url: %r{\Ahttps://api\.mybank\.com/v2/.*\z},
+  path_prefix: '/v2'
+```
+
 ## What's in a `FakeService`?
 
 The definition of `FakeService` is really simple. It's just a
