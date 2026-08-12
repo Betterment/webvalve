@@ -140,6 +140,32 @@ You will have to restart your application after making this change
 because service faking is an initialization time concern and not a
 runtime concern.
 
+### Advanced request matching
+
+You can also use the `request_matcher` option when registering a service to specify
+additional request matching criteria. This is particularly useful when
+you need to mock requests based on the request body or other parameters,
+not just the URL.
+
+```ruby
+# config/webvalve.rb
+WebValve.register(
+  "FakeBank",
+  request_matcher: {
+    body: WebMock::Matchers::HashIncludingMatcher.new(action: 'limit_order')
+  }
+)
+```
+
+In this example, the FakeBank service will only be used for requests that
+match request body that includes the key `action` with the value `limit_order`.
+
+The `request_matcher` option accepts the same parameters as WebMock's
+`with` method, including:
+- `:body`
+- `:headers`
+- `:query`
+
 ## Configuring fakes in tests
 
 In order to get WebValve fake services working properly in tests, you
