@@ -17,11 +17,14 @@ jobs:
         gemfile:
           - gemfiles/rails_8_0.gemfile
           - gemfiles/ruby.gemfile
+          - gemfiles/rails_8_1.gemfile
     name: Ruby ${{ matrix.ruby }}, ${{ matrix.gemfile }} Tests
     steps:
       - uses: technote-space/auto-cancel-redundant-job@7d35aba30420fc2368f8aeed50371e99e7fa3239 # v1
         if: github.event_name == 'pull_request'
       - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+        with:
+          persist-credentials: false
       - uses: ruby/setup-ruby@a4effe49ee8ee5b8b5091268c473a4628afb5651 # v1
         env:
           BUNDLE_GEMFILE: ${{ matrix.gemfile }}
